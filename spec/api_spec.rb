@@ -28,7 +28,7 @@ class Foo
 end
     }.strip)
 
-    commit = MethodLog::Commit.new
+    commit = @repository.build_commit
     commit.add(foo)
     @repository.add(commit)
 

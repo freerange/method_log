@@ -7,5 +7,13 @@ module MethodLog
       @path = path
       @source = source
     end
+
+    def ==(other)
+      (path == other.path) && (source == other.source)
+    end
+
+    def hash
+      [path, source].hash
+    end
   end
 end

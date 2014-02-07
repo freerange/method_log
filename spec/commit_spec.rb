@@ -20,7 +20,7 @@ describe MethodLog::Commit do
 
     before do
       FileUtils.mkdir_p(repository_path)
-      @repository = MethodLog::Repository.new(path: repository_path)
+      Rugged::Repository.init_at(repository_path, :bare)
     end
 
     after do
@@ -30,11 +30,15 @@ describe MethodLog::Commit do
     it 'stores source files added to a commit in the repository against a real commit' do
       source_one = MethodLog::SourceFile.new(path: 'path/to/source_one.rb', source: 'source-one')
       source_two = MethodLog::SourceFile.new(path: 'path/to/source_two.rb', source: 'source-two')
-      commit = @repository.build_commit
+
+      repository = MethodLog::Repository.new(path: repository_path)
+      commit = repository.build_commit
       commit.add(source_one)
       commit.add(source_two)
       commit.apply
 
+      repository = MethodLog::Repository.new(path: repository_path)
+      commit = repository.commits.first
       expect(commit.source_files).to eq([source_one, source_two])
     end
   end

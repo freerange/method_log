@@ -12,7 +12,7 @@ describe MethodLog::API do
 
   before do
     FileUtils.mkdir_p(repository_path)
-    @repository = MethodLog::Repository.new(path: repository_path)
+    Rugged::Repository.init_at(repository_path, :bare)
   end
 
   after do
@@ -28,11 +28,13 @@ class Foo
 end
     }.strip)
 
-    commit = @repository.build_commit
+    repository = MethodLog::Repository.new(path: repository_path)
+    commit = repository.build_commit
     commit.add(foo)
-    @repository.add(commit)
+    repository.add(commit)
 
-    api = MethodLog::API.new(repository: @repository)
+    repository = MethodLog::Repository.new(path: repository_path)
+    api = MethodLog::API.new(repository: repository)
     method_commits = api.history('Foo#bar')
 
     method_definition = MethodLog::MethodDefinition.new(path: foo.path, lines: 1..3)

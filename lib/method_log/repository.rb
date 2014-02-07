@@ -7,12 +7,17 @@ module MethodLog
     attr_reader :commits
 
     def initialize(path:)
+      @repository = Rugged::Repository.new(path)
       @commits = []
-      @repository = Rugged::Repository.init_at(path, :bare)
+      if @repository.ref('refs/heads/master')
+        @repository.walk(@repository.last_commit) do |commit|
+          @commits << build_commit(sha: commit.oid)
+        end
+      end
     end
 
-    def build_commit
-      Commit.new(repository: @repository)
+    def build_commit(sha: nil)
+      Commit.new(repository: @repository, sha: sha)
     end
 
     def add(commit)

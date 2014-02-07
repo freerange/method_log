@@ -19,8 +19,17 @@ describe MethodLog::API do
     FileUtils.rm_rf(repository_path)
   end
 
-  it 'finds class instance method in repository with single commit with single source file' do
-    foo = MethodLog::SourceFile.new(path: 'foo.rb', source: %{
+  it 'finds class instance method in repository with two commits with single source file' do
+    foo_1 = MethodLog::SourceFile.new(path: 'foo.rb', source: %{
+class Foo
+  def bar
+    # implementation
+  end
+end
+    }.strip)
+
+    foo_2 = MethodLog::SourceFile.new(path: 'foo.rb', source: %{
+# move method definition down one line
 class Foo
   def bar
     # implementation
@@ -29,16 +38,25 @@ end
     }.strip)
 
     repository = MethodLog::Repository.new(path: repository_path)
-    commit = repository.build_commit
-    commit.add(foo)
-    repository.add(commit)
+
+    commit_1 = repository.build_commit
+    commit_1.add(foo_1)
+    repository.add(commit_1)
+
+    commit_2 = repository.build_commit
+    commit_2.add(foo_2)
+    repository.add(commit_2)
 
     repository = MethodLog::Repository.new(path: repository_path)
     api = MethodLog::API.new(repository: repository)
     method_commits = api.history('Foo#bar')
 
-    method_definition = MethodLog::MethodDefinition.new(path: foo.path, lines: 1..3)
-    method_commit = MethodLog::MethodCommit.new(commit: commit, method_definition: method_definition)
-    expect(method_commits).to eq([method_commit])
+    method_definition_1 = MethodLog::MethodDefinition.new(path: foo_1.path, lines: 1..3)
+    method_definition_2 = MethodLog::MethodDefinition.new(path: foo_2.path, lines: 2..4)
+
+    method_commit_1 = MethodLog::MethodCommit.new(commit: commit_1, method_definition: method_definition_1)
+    method_commit_2 = MethodLog::MethodCommit.new(commit: commit_2, method_definition: method_definition_2)
+
+    expect(method_commits).to eq([method_commit_2, method_commit_1])
   end
 end

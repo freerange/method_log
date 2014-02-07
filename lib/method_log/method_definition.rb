@@ -13,6 +13,10 @@ module MethodLog
       [path, lines].hash
     end
 
+    def to_s
+      "#{path}:#{lines}"
+    end
+
     protected
 
     attr_reader :path

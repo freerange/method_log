@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'method_log'
+require 'method_log/repository'
+require 'method_log/api'
+
+repository = MethodLog::Repository.new(path: ARGV[0])
+api = MethodLog::API.new(repository: repository)
+method_commits = api.history(ARGV[1])
+method_commits.each do |method_commit|
+  puts method_commit
+end

@@ -13,6 +13,10 @@ module MethodLog
       [commit, method_definition].hash
     end
 
+    def to_s
+      "#{commit}: #{method_definition}"
+    end
+
     protected
 
     attr_reader :commit

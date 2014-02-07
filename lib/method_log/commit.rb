@@ -42,5 +42,9 @@ module MethodLog
     def hash
       sha.hash
     end
+
+    def to_s
+      sha
+    end
   end
 end

@@ -1,0 +1,2 @@
+module MethodLog
+end

@@ -20,7 +20,7 @@ module MethodLog
       case name
       when 'def'
         @line_number = lineno
-      when 'class'
+      when 'class', 'module'
         @at_scope_start = true
       end
     end

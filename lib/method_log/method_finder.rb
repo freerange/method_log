@@ -7,6 +7,7 @@ module MethodLog
     def initialize(source_file:)
       super(source_file.source)
       @source_file = source_file
+      @namespaces = []
       @methods = {}
       @at_scope_start = false
       parse
@@ -27,16 +28,24 @@ module MethodLog
 
     def on_const(name)
       if @at_scope_start
-        @klass = name
+        @namespaces << name
         @at_scope_start = false
       end
     end
 
     def on_def(name, *args)
-      identifier = "#{@klass}##{name}"
+      identifier = "#{@namespaces.join('::')}##{name}"
       lines = (@line_number - 1)..(lineno - 1)
       definition = MethodDefinition.new(path: @source_file.path, lines: lines)
       @methods[identifier] = definition
+    end
+
+    def on_class(*args)
+      @namespaces.pop
+    end
+
+    def on_module(*args)
+      @namespaces.pop
     end
   end
 end

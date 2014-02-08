@@ -16,7 +16,7 @@ end
     method_finder = MethodLog::MethodFinder.new(source_file: foo)
     method_definition = method_finder.find('Foo#bar')
 
-    expect(method_definition).to eq(MethodLog::MethodDefinition.new(path: foo.path, lines: 1..3))
+    expect(method_definition).to eq(MethodLog::MethodDefinition.new(source_file: foo, lines: 1..3))
   end
 
   it 'finds definition of instance method on module' do
@@ -31,7 +31,7 @@ end
     method_finder = MethodLog::MethodFinder.new(source_file: foo)
     method_definition = method_finder.find('Foo#bar')
 
-    expect(method_definition).to eq(MethodLog::MethodDefinition.new(path: foo.path, lines: 1..3))
+    expect(method_definition).to eq(MethodLog::MethodDefinition.new(source_file: foo, lines: 1..3))
   end
 
   it 'finds definition of instance method on class within module' do
@@ -48,6 +48,6 @@ end
     method_finder = MethodLog::MethodFinder.new(source_file: foo)
     method_definition = method_finder.find('Foo::Bar#baz')
 
-    expect(method_definition).to eq(MethodLog::MethodDefinition.new(path: foo.path, lines: 2..4))
+    expect(method_definition).to eq(MethodLog::MethodDefinition.new(source_file: foo, lines: 2..4))
   end
 end

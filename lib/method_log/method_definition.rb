@@ -1,25 +1,25 @@
 module MethodLog
   class MethodDefinition
-    def initialize(path:, lines:)
-      @path = path
+    def initialize(source_file:, lines:)
+      @source_file = source_file
       @lines = lines
     end
 
     def ==(other)
-      (path == other.path) && (lines == other.lines)
+      (source_file == other.source_file) && (lines == other.lines)
     end
 
     def hash
-      [path, lines].hash
+      [source_file, lines].hash
     end
 
     def to_s
-      "#{path}:#{lines}"
+      "#{source_file.path}:#{lines}"
     end
 
     protected
 
-    attr_reader :path
+    attr_reader :source_file
     attr_reader :lines
   end
 end

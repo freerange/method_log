@@ -36,7 +36,7 @@ module MethodLog
     def on_def(name, *args)
       identifier = "#{@namespaces.join('::')}##{name}"
       lines = (@line_number - 1)..(lineno - 1)
-      definition = MethodDefinition.new(path: @source_file.path, lines: lines)
+      definition = MethodDefinition.new(source_file: @source_file, lines: lines)
       @methods[identifier] = definition
     end
 

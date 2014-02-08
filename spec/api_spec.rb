@@ -51,8 +51,8 @@ end
     api = MethodLog::API.new(repository: repository)
     method_commits = api.history('Foo#bar')
 
-    method_definition_1 = MethodLog::MethodDefinition.new(path: foo_1.path, lines: 1..3)
-    method_definition_2 = MethodLog::MethodDefinition.new(path: foo_2.path, lines: 2..4)
+    method_definition_1 = MethodLog::MethodDefinition.new(source_file: foo_1, lines: 1..3)
+    method_definition_2 = MethodLog::MethodDefinition.new(source_file: foo_2, lines: 2..4)
 
     method_commit_1 = MethodLog::MethodCommit.new(commit: commit_1, method_definition: method_definition_1)
     method_commit_2 = MethodLog::MethodCommit.new(commit: commit_2, method_definition: method_definition_2)

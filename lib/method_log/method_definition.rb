@@ -14,7 +14,10 @@ module MethodLog
     end
 
     def to_s
-      "#{source_file.path}:#{lines}"
+      [
+        "#{source_file.path}:#{lines}",
+        source_file.snippet(lines)
+      ].join($/)
     end
 
     protected

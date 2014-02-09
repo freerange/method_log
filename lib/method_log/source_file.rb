@@ -15,5 +15,9 @@ module MethodLog
     def hash
       [path, source].hash
     end
+
+    def snippet(range)
+      lines = source.split($/)[range].join($/)
+    end
   end
 end

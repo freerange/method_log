@@ -16,7 +16,6 @@ Trace the history of an individual method in a git repository.
 * Support class methods
 * Support namespaced classes e.g. `class Foo::Bar`
 * Support for Rspec tests
-* Display method implementation for each commit
 * Display diffs in method implementation between commits
 * Only display diffs when method implementation has changed
 * Default to looking for git repo in current working directory

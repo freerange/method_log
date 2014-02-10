@@ -4,7 +4,7 @@ require 'method_log/source_file'
 require 'method_log/method_definition'
 
 describe MethodLog::MethodCommit do
-  let(:commit) { MethodLog::Commit.new }
+  let(:commit) { MethodLog::Commit.new(sha: nil) }
   let(:source_file) { MethodLog::SourceFile.new(path: '/path/to/source.rb', source: 'source') }
   let(:method_definition) { MethodLog::MethodDefinition.new(source_file: source_file, lines: 5..7) }
   let(:method_commit) {

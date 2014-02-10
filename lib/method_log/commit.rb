@@ -6,7 +6,7 @@ module MethodLog
   class Commit
     attr_reader :sha
 
-    def initialize(repository: repository, sha: sha)
+    def initialize(repository: nil, sha:)
       @repository = repository
       @sha = sha
       @index = Rugged::Index.new

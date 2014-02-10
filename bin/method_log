@@ -7,7 +7,7 @@ require 'method_log/api'
 
 repository = MethodLog::Repository.new(path: Dir.pwd)
 api = MethodLog::API.new(repository: repository)
-method_commits = api.history(ARGV[1])
+method_commits = api.history(ARGV[0])
 method_commits.each do |method_commit|
   puts method_commit
 end

@@ -1,6 +1,6 @@
 module MethodLog
   class MethodDefinition
-    def initialize(source_file:, lines:)
+    def initialize(source_file: nil, lines: nil)
       @source_file = source_file
       @lines = lines
     end

@@ -4,7 +4,7 @@ require 'method_log/method_definition'
 
 module MethodLog
   class MethodFinder < Ripper
-    def initialize(source_file:)
+    def initialize(source_file: nil)
       super(source_file.source)
       @source_file = source_file
       @namespaces = []

@@ -6,7 +6,7 @@ module MethodLog
   class Repository
     attr_reader :commits
 
-    def initialize(path:)
+    def initialize(path: nil)
       @repository = Rugged::Repository.new(path)
       @commits = []
       if @repository.ref('refs/heads/master')

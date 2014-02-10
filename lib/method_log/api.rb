@@ -3,7 +3,7 @@ require 'method_log/method_commit'
 
 module MethodLog
   class API
-    def initialize(repository:)
+    def initialize(repository: nil)
       @repository = repository
     end
 

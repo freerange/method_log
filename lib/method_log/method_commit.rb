@@ -1,6 +1,6 @@
 module MethodLog
   class MethodCommit
-    def initialize(commit:, method_definition:)
+    def initialize(commit: nil, method_definition: nil)
       @commit = commit
       @method_definition = method_definition
     end

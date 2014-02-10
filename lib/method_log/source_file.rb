@@ -3,7 +3,7 @@ module MethodLog
     attr_reader :path
     attr_reader :source
 
-    def initialize(path:, source:)
+    def initialize(path: nil, source: nil)
       @path = path
       @source = source
     end

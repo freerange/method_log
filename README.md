@@ -2,6 +2,14 @@
 
 Trace the history of an individual method in a git repository.
 
+This is a work-in-progress and nowhere near production-ready.
+
+### Dependencies
+
+* Ruby v2.1 (just because I'm using required name parameters)
+* The [rugged](https://github.com/libgit2/rugged) Ruby gem (listed as dependency in gemspec)
+* The [libgit2](https://github.com/libgit2/libgit2) C library (included as part of rugged gem)
+
 ### Install
 
     gem install method_log
@@ -12,7 +20,7 @@ Trace the history of an individual method in a git repository.
 
 ### Todo
 
-* Support earlier versions of Ruby
+* Support earlier versions of Ruby (it ought to be possible to support down to v1.9.3 fairly easily)
 * Support class methods
 * Support namespaced classes e.g. `class Foo::Bar`
 * Support for Rspec tests

@@ -24,7 +24,7 @@ This is a work-in-progress and nowhere near production-ready.
 * Support class methods
 * Support namespaced classes e.g. `class Foo::Bar`
 * Support for Rspec tests
-* Display diffs in method implementation between commits
+* Display diffs in method implementation between commits c.f. `git log --patch`
 * Only display diffs when method implementation has changed
 * Default to looking for git repo in current working directory
 * Default to looking for commits in current git branch
@@ -32,6 +32,7 @@ This is a work-in-progress and nowhere near production-ready.
 * Optimise search for method definitions:
   * First look in file where method was last defined
   * Simple text search for files containing method name to narrow files that need to be parsed
+* Find "similar" method implementations e.g. by comparing ASTs of implementations
 
 ### Credits
 

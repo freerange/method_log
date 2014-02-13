@@ -30,6 +30,7 @@ This is a work-in-progress and nowhere near production-ready.
 * Default to looking for commits in current git branch
 * Maybe add as new git command or extension to existing command e.g. `git log`
 * Optimise search for method definitions:
+  * Only consider commits where file that last contained method has changed
   * First look in file where method was last defined
   * Simple text search for files containing method name to narrow files that need to be parsed
 * Find "similar" method implementations e.g. by comparing ASTs of implementations
@@ -37,6 +38,10 @@ This is a work-in-progress and nowhere near production-ready.
 ### Credits
 
 Written by [James Mead](http://jamesmead.org) and the other members of [Go Free Range](http://gofreerange.com).
+
+Thanks to Michael Feathers for some ideas in [delta-flora](https://github.com/michaelfeathers/delta-flora).
+
+Thanks to [TICOSA](http://ticosa.org/) for giving me the impetus to do something about an idea I'd been kicking around for a while.
 
 ### License
 

@@ -42,6 +42,18 @@ module MethodLog
       super
     end
 
+    def on_defs(node)
+      definee_node, name, args_node, body_node = *node
+      expression = node.location.expression
+      first_line = expression.line - 1
+      last_line = expression.source_buffer.decompose_position(expression.end_pos).first - 1
+      lines = first_line..last_line
+      definition = MethodDefinition.new(source_file: @source_file, lines: lines)
+      identifier = "#{@namespaces.flatten.join('::')}.#{name}"
+      @methods[identifier] = definition
+      super
+    end
+
     private
 
     def process_const(node, namespaces = [])

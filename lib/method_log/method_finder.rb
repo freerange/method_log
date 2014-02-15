@@ -17,16 +17,15 @@ module MethodLog
     end
 
     def on_module(node)
-      scope_node, name = *node.children.first
-      @namespaces.push(name)
+      const_node = node.children.first
+      @namespaces.push(process_const(const_node))
       super
       @namespaces.pop
     end
 
     def on_class(node)
       const_node = node.children.first
-      scope_node, name = *const_node
-      @namespaces.push(name)
+      @namespaces.push(process_const(const_node))
       super
       @namespaces.pop
     end
@@ -38,9 +37,20 @@ module MethodLog
       last_line = expression.source_buffer.decompose_position(expression.end_pos).first - 1
       lines = first_line..last_line
       definition = MethodDefinition.new(source_file: @source_file, lines: lines)
-      identifier = "#{@namespaces.join('::')}##{name}"
+      identifier = "#{@namespaces.flatten.join('::')}##{name}"
       @methods[identifier] = definition
       super
+    end
+
+    private
+
+    def process_const(node, namespaces = [])
+      scope_node, name = *node
+      namespaces.unshift(name)
+      if scope_node
+        process_const(scope_node, namespaces)
+      end
+      namespaces
     end
   end
 end

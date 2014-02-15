@@ -50,4 +50,22 @@ end
 
     expect(method_definition).to eq(MethodLog::MethodDefinition.new(source_file: foo, lines: 2..4))
   end
+
+  it 'finds definition of instance method on namespaced class within previously defined module' do
+    foo = MethodLog::SourceFile.new(path: 'foo.rb', source: %{
+module Foo
+end
+
+class Foo::Bar
+  def baz
+    # implementation
+  end
+end
+    }.strip)
+
+    method_finder = MethodLog::MethodFinder.new(source_file: foo)
+    method_definition = method_finder.find('Foo::Bar#baz')
+
+    expect(method_definition).to eq(MethodLog::MethodDefinition.new(source_file: foo, lines: 4..6))
+  end
 end

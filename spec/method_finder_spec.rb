@@ -133,4 +133,58 @@ end
 
     expect(method_definition).to eq(MethodLog::MethodDefinition.new(source_file: foo, lines: 2..4))
   end
+
+  it 'finds definition of class method on class when singleton class is re-opened' do
+    foo = MethodLog::SourceFile.new(path: 'foo.rb', source: %{
+class Foo
+  class << self
+    def bar
+      # implementation
+    end
+  end
+end
+    }.strip)
+
+    method_finder = MethodLog::MethodFinder.new(source_file: foo)
+    method_definition = method_finder.find('Foo.bar')
+
+    expect(method_definition).to eq(MethodLog::MethodDefinition.new(source_file: foo, lines: 2..4))
+  end
+
+  it 'finds definition of class method on class when singleton class is re-opened with explicit reference to class' do
+    foo = MethodLog::SourceFile.new(path: 'foo.rb', source: %{
+class Foo
+  class << Foo
+    def bar
+      # implementation
+    end
+  end
+end
+    }.strip)
+
+    method_finder = MethodLog::MethodFinder.new(source_file: foo)
+    method_definition = method_finder.find('Foo.bar')
+
+    expect(method_definition).to eq(MethodLog::MethodDefinition.new(source_file: foo, lines: 2..4))
+  end
+
+  it 'finds definition of class method on class when singleton class is re-opened with explicit reference to class outside current scope' do
+    foo = MethodLog::SourceFile.new(path: 'foo.rb', source: %{
+class Foo
+end
+
+class Bar
+  class << Foo
+    def bar
+      # implementation
+    end
+  end
+end
+    }.strip)
+
+    method_finder = MethodLog::MethodFinder.new(source_file: foo)
+    method_definition = method_finder.find('Foo.bar')
+
+    expect(method_definition).to eq(MethodLog::MethodDefinition.new(source_file: foo, lines: 5..7))
+  end
 end

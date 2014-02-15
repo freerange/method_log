@@ -30,6 +30,24 @@ module MethodLog
       @namespaces.pop
     end
 
+    def on_sclass(node)
+      target_node = node.children.first
+      case target_node.type
+      when :self
+        namespaces = @namespaces.last
+      when :const
+        namespaces = process_const(target_node)
+      else
+        raise
+      end
+      original_namespaces = @namespaces
+      @namespaces = namespaces
+      @singleton_scope = true
+      super
+      @singleton_scope = false
+      @namespaces = original_namespaces
+    end
+
     def on_def(node)
       name, args_node, body_node = *node
       expression = node.location.expression
@@ -37,7 +55,8 @@ module MethodLog
       last_line = expression.source_buffer.decompose_position(expression.end_pos).first - 1
       lines = first_line..last_line
       definition = MethodDefinition.new(source_file: @source_file, lines: lines)
-      identifier = "#{@namespaces.flatten.join('::')}##{name}"
+      separator = @singleton_scope ? '.' : '#'
+      identifier = "#{@namespaces.flatten.join('::')}#{separator}#{name}"
       @methods[identifier] = definition
       super
     end

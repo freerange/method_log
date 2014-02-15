@@ -134,6 +134,24 @@ end
     expect(method_definition).to eq(MethodLog::MethodDefinition.new(source_file: foo, lines: 2..4))
   end
 
+  it 'finds definition of class method on class with explicit reference to namespaced class outside current scope' do
+    foo = MethodLog::SourceFile.new(path: 'foo.rb', source: %{
+class Foo
+end
+
+class Bar
+  def Foo.baz
+    # implementation
+  end
+end
+    }.strip)
+
+    method_finder = MethodLog::MethodFinder.new(source_file: foo)
+    method_definition = method_finder.find('Foo.baz')
+
+    expect(method_definition).to eq(MethodLog::MethodDefinition.new(source_file: foo, lines: 4..6))
+  end
+
   it 'finds definition of class method on class when singleton class is re-opened' do
     foo = MethodLog::SourceFile.new(path: 'foo.rb', source: %{
 class Foo

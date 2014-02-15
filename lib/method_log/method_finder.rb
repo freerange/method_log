@@ -63,12 +63,20 @@ module MethodLog
 
     def on_defs(node)
       definee_node, name, args_node, body_node = *node
+      case definee_node.type
+      when :self
+        namespaces = @namespaces.last
+      when :const
+        namespaces = process_const(definee_node)
+      else
+        raise
+      end
       expression = node.location.expression
       first_line = expression.line - 1
       last_line = expression.source_buffer.decompose_position(expression.end_pos).first - 1
       lines = first_line..last_line
       definition = MethodDefinition.new(source_file: @source_file, lines: lines)
-      identifier = "#{@namespaces.flatten.join('::')}.#{name}"
+      identifier = "#{namespaces.flatten.join('::')}.#{name}"
       @methods[identifier] = definition
       super
     end

@@ -1,12 +1,13 @@
 require 'parser/current'
 
 require 'method_log/method_definition'
+require 'method_log/scope'
 
 module MethodLog
   class MethodFinder < Parser::AST::Processor
     def initialize(source_file: nil)
       @source_file = source_file
-      @namespaces = []
+      @scope = Scope.new
       @methods = {}
       ast = Parser::CurrentRuby.parse(source_file.source)
       process(ast)
@@ -18,34 +19,47 @@ module MethodLog
 
     def on_module(node)
       const_node = node.children.first
-      @namespaces.push(process_const(const_node))
+      constants = process_const(const_node)
+      new_constant = constants.pop
+      scope = @scope
+      constants.each do |c|
+        scope = scope.lookup(c)
+      end
+      @scope = scope.define(new_constant)
       super
-      @namespaces.pop
+      @scope = @scope.parent
     end
 
     def on_class(node)
       const_node = node.children.first
-      @namespaces.push(process_const(const_node))
+      constants = process_const(const_node)
+      new_constant = constants.pop
+      scope = @scope
+      constants.each do |c|
+        scope = scope.lookup(c)
+      end
+      @scope = scope.define(new_constant)
       super
-      @namespaces.pop
+      @scope = @scope.parent
     end
 
     def on_sclass(node)
       target_node = node.children.first
       case target_node.type
       when :self
-        namespaces = @namespaces.last
+        @scope = @scope.singleton
       when :const
-        namespaces = process_const(target_node)
+        constants = process_const(target_node)
+        scope = @scope
+        constants.each do |c|
+          scope = scope.lookup(c)
+        end
+        @scope = scope.singleton
       else
         raise
       end
-      original_namespaces = @namespaces
-      @namespaces = namespaces
-      @singleton_scope = true
       super
-      @singleton_scope = false
-      @namespaces = original_namespaces
+      @scope = @scope.parent
     end
 
     def on_def(node)
@@ -55,8 +69,7 @@ module MethodLog
       last_line = expression.source_buffer.decompose_position(expression.end_pos).first - 1
       lines = first_line..last_line
       definition = MethodDefinition.new(source_file: @source_file, lines: lines)
-      separator = @singleton_scope ? '.' : '#'
-      identifier = "#{@namespaces.flatten.join('::')}#{separator}#{name}"
+      identifier = @scope.method_identifier(name)
       @methods[identifier] = definition
       super
     end
@@ -65,9 +78,14 @@ module MethodLog
       definee_node, name, args_node, body_node = *node
       case definee_node.type
       when :self
-        namespaces = @namespaces.last
+        scope = @scope.singleton
       when :const
-        namespaces = process_const(definee_node)
+        constants = process_const(definee_node)
+        scope = @scope
+        constants.each do |c|
+          scope = scope.lookup(c)
+        end
+        scope = scope.singleton
       else
         raise
       end
@@ -76,7 +94,7 @@ module MethodLog
       last_line = expression.source_buffer.decompose_position(expression.end_pos).first - 1
       lines = first_line..last_line
       definition = MethodDefinition.new(source_file: @source_file, lines: lines)
-      identifier = "#{namespaces.flatten.join('::')}.#{name}"
+      identifier = scope.method_identifier(name)
       @methods[identifier] = definition
       super
     end

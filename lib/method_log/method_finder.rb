@@ -44,11 +44,7 @@ module MethodLog
 
     def on_def(node)
       name, args_node, body_node = *node
-      expression = node.location.expression
-      first_line = expression.line - 1
-      last_line = expression.source_buffer.decompose_position(expression.end_pos).first - 1
-      lines = first_line..last_line
-      definition = MethodDefinition.new(source_file: @source_file, lines: lines)
+      definition = MethodDefinition.new(source_file: @source_file, lines: lines_for(node))
       identifier = @scope.method_identifier(name)
       @methods[identifier] = definition
       super
@@ -57,11 +53,7 @@ module MethodLog
     def on_defs(node)
       definee_node, name, args_node, body_node = *node
       scope = singleton_scope_for(definee_node)
-      expression = node.location.expression
-      first_line = expression.line - 1
-      last_line = expression.source_buffer.decompose_position(expression.end_pos).first - 1
-      lines = first_line..last_line
-      definition = MethodDefinition.new(source_file: @source_file, lines: lines)
+      definition = MethodDefinition.new(source_file: @source_file, lines: lines_for(node))
       identifier = scope.method_identifier(name)
       @methods[identifier] = definition
       super
@@ -88,6 +80,13 @@ module MethodLog
         process_const(scope_node, namespaces)
       end
       namespaces
+    end
+
+    def lines_for(node)
+      expression = node.location.expression
+      first_line = expression.line - 1
+      last_line = expression.source_buffer.decompose_position(expression.end_pos).first - 1
+      first_line..last_line
     end
   end
 end

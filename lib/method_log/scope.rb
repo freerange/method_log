@@ -1,5 +1,25 @@
 module MethodLog
   class Scope
+    class Null < Scope
+      def initialize
+        super(name: 'null')
+      end
+
+      def lookup(name)
+        raise NameError.new("uninitialized constant #{name}")
+      end
+    end
+
+    class Root < Scope
+      def initialize
+        super(name: 'root', parent: Scope::Null.new)
+      end
+
+      def names
+        []
+      end
+    end
+
     attr_reader :parent
 
     def initialize(name: nil, parent: nil, singleton: false)
@@ -10,21 +30,15 @@ module MethodLog
     end
 
     def define(name)
-      @modules[name] = self.class.new(name: name, parent: self)
+      @modules[name] = Scope.new(name: name, parent: self)
     end
 
     def lookup(name)
-      @modules.fetch(name) do
-        if @parent
-          @parent.lookup(name)
-        else
-          raise NameError.new("uninitialized constant #{name}")
-        end
-      end
+      @modules.fetch(name) { @parent.lookup(name) }
     end
 
     def singleton
-      self.class.new(name: @name, parent: self, singleton: true)
+      Scope.new(name: @name, parent: self, singleton: true)
     end
 
     def method_identifier(name)
@@ -35,7 +49,7 @@ module MethodLog
 
     def names
       names = @singleton ? [] : [@name]
-      @parent && @parent.parent ? @parent.names + names : names
+      names = @parent.names + names
     end
 
     private

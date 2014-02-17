@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'method_log/scope'
 
 describe MethodLog::Scope do
-  let(:root) { MethodLog::Scope.new }
+  let(:root) { MethodLog::Scope::Root.new }
 
   it 'ruby interactive style method identifier for top-level module' do
     a = root.define(:A)

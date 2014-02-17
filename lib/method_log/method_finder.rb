@@ -7,7 +7,7 @@ module MethodLog
   class MethodFinder < Parser::AST::Processor
     def initialize(source_file: nil)
       @source_file = source_file
-      @scope = Scope.new
+      @scope = Scope::Root.new
       @methods = {}
       ast = Parser::CurrentRuby.parse(source_file.source)
       process(ast)

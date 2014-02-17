@@ -21,41 +21,31 @@ module MethodLog
       const_node = node.children.first
       constants = process_const(const_node)
       new_constant = constants.pop
-      @scope = @scope.for(constants).define(new_constant)
-      super
-      @scope = @scope.parent
+      with_scope(@scope.for(constants).define(new_constant)) { super }
     end
 
     def on_class(node)
       const_node = node.children.first
       constants = process_const(const_node)
       new_constant = constants.pop
-      @scope = @scope.for(constants).define(new_constant)
-      super
-      @scope = @scope.parent
+      with_scope(@scope.for(constants).define(new_constant)) { super }
     end
 
     def on_sclass(node)
       target_node = node.children.first
-      @scope = singleton_scope_for(target_node)
-      super
-      @scope = @scope.parent
+      with_scope(singleton_scope_for(target_node)) { super }
     end
 
     def on_def(node)
       name, args_node, body_node = *node
-      definition = MethodDefinition.new(source_file: @source_file, lines: lines_for(node))
-      identifier = @scope.method_identifier(name)
-      @methods[identifier] = definition
+      record_method_definition(@scope, name, node)
       super
     end
 
     def on_defs(node)
       definee_node, name, args_node, body_node = *node
       scope = singleton_scope_for(definee_node)
-      definition = MethodDefinition.new(source_file: @source_file, lines: lines_for(node))
-      identifier = scope.method_identifier(name)
-      @methods[identifier] = definition
+      record_method_definition(scope, name, node)
       super
     end
 
@@ -87,6 +77,19 @@ module MethodLog
       first_line = expression.line - 1
       last_line = expression.source_buffer.decompose_position(expression.end_pos).first - 1
       first_line..last_line
+    end
+
+    def record_method_definition(scope, name, node)
+      definition = MethodDefinition.new(source_file: @source_file, lines: lines_for(node))
+      identifier = scope.method_identifier(name)
+      @methods[identifier] = definition
+    end
+
+    def with_scope(scope, &block)
+      @scope = scope
+      yield
+    ensure
+      @scope = scope.parent
     end
   end
 end

@@ -37,15 +37,7 @@ module MethodLog
 
     def on_sclass(node)
       target_node = node.children.first
-      case target_node.type
-      when :self
-        @scope = @scope.singleton
-      when :const
-        constants = process_const(target_node)
-        @scope = @scope.for(constants).singleton
-      else
-        raise
-      end
+      @scope = singleton_scope_for(target_node)
       super
       @scope = @scope.parent
     end
@@ -64,15 +56,7 @@ module MethodLog
 
     def on_defs(node)
       definee_node, name, args_node, body_node = *node
-      case definee_node.type
-      when :self
-        scope = @scope.singleton
-      when :const
-        constants = process_const(definee_node)
-        scope = @scope.for(constants).singleton
-      else
-        raise
-      end
+      scope = singleton_scope_for(definee_node)
       expression = node.location.expression
       first_line = expression.line - 1
       last_line = expression.source_buffer.decompose_position(expression.end_pos).first - 1
@@ -84,6 +68,18 @@ module MethodLog
     end
 
     private
+
+    def singleton_scope_for(node)
+      case node.type
+      when :self
+        @scope.singleton
+      when :const
+        constants = process_const(node)
+        @scope.for(constants).singleton
+      else
+        raise
+      end
+    end
 
     def process_const(node, namespaces = [])
       scope_node, name = *node

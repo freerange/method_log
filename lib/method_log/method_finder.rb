@@ -24,12 +24,7 @@ module MethodLog
       with_scope(@scope.for(constants).define(new_constant)) { super }
     end
 
-    def on_class(node)
-      const_node = node.children.first
-      constants = process_const(const_node)
-      new_constant = constants.pop
-      with_scope(@scope.for(constants).define(new_constant)) { super }
-    end
+    alias_method :on_class, :on_module
 
     def on_sclass(node)
       target_node = node.children.first

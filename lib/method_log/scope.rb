@@ -29,6 +29,12 @@ module MethodLog
       @modules = {}
     end
 
+    def for(modules)
+      scope = self
+      modules.each { |m| scope = scope.lookup(m) }
+      scope
+    end
+
     def define(name)
       @modules[name] = Scope.new(name: name, parent: self)
     end

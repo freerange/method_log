@@ -60,5 +60,14 @@ describe MethodLog::Scope do
   it 'raises exception if module is not found' do
     expect { root.lookup(:A) }.to raise_error(NameError, 'uninitialized constant A')
   end
+
+  it 'looks up qualified module' do
+    a = root.define(:A)
+    b = a.define(:B)
+    c = b.define(:C)
+    expect(c.for([:A])).to eq(a)
+    expect(c.for([:A, :B])).to eq(b)
+    expect(c.for([:A, :B, :C])).to eq(c)
+  end
 end
 

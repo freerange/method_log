@@ -21,11 +21,7 @@ module MethodLog
       const_node = node.children.first
       constants = process_const(const_node)
       new_constant = constants.pop
-      scope = @scope
-      constants.each do |c|
-        scope = scope.lookup(c)
-      end
-      @scope = scope.define(new_constant)
+      @scope = @scope.for(constants).define(new_constant)
       super
       @scope = @scope.parent
     end
@@ -34,11 +30,7 @@ module MethodLog
       const_node = node.children.first
       constants = process_const(const_node)
       new_constant = constants.pop
-      scope = @scope
-      constants.each do |c|
-        scope = scope.lookup(c)
-      end
-      @scope = scope.define(new_constant)
+      @scope = @scope.for(constants).define(new_constant)
       super
       @scope = @scope.parent
     end
@@ -50,11 +42,7 @@ module MethodLog
         @scope = @scope.singleton
       when :const
         constants = process_const(target_node)
-        scope = @scope
-        constants.each do |c|
-          scope = scope.lookup(c)
-        end
-        @scope = scope.singleton
+        @scope = @scope.for(constants).singleton
       else
         raise
       end
@@ -81,11 +69,7 @@ module MethodLog
         scope = @scope.singleton
       when :const
         constants = process_const(definee_node)
-        scope = @scope
-        constants.each do |c|
-          scope = scope.lookup(c)
-        end
-        scope = scope.singleton
+        scope = @scope.for(constants).singleton
       else
         raise
       end

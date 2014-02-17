@@ -49,7 +49,7 @@ end
 
     repository = MethodLog::Repository.new(path: repository_path)
     api = MethodLog::API.new(repository: repository)
-    method_commits = api.history('Foo#bar')
+    method_commits = api.history('Foo#bar').to_a
 
     method_definition_1 = MethodLog::MethodDefinition.new(source_file: foo_1, lines: 1..3)
     method_definition_2 = MethodLog::MethodDefinition.new(source_file: foo_2, lines: 2..4)

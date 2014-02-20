@@ -28,7 +28,9 @@ module MethodLog
       commit = @repository.lookup(sha)
       source_files = []
       commit.tree.walk_blobs do |root, blob_hash|
-        path = root.empty? ? blob_hash[:name] : File.join(root, blob_hash[:name])
+        name = blob_hash[:name]
+        next unless File.extname(name) == '.rb'
+        path = root.empty? ? name : File.join(root, name)
         source = @repository.lookup(blob_hash[:oid]).text
         source_files << SourceFile.new(path: path, source: source)
       end

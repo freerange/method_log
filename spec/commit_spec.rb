@@ -41,5 +41,18 @@ describe MethodLog::Commit do
       commit = repository.commits.first
       expect(commit.source_files).to eq([source_one, source_two])
     end
+
+    it 'only includes source files with ruby file extension' do
+      source_file = MethodLog::SourceFile.new(path: 'path/to/source_one.py', source: 'source-file')
+
+      repository = MethodLog::Repository.new(path: repository_path)
+      commit = repository.build_commit
+      commit.add(source_file)
+      commit.apply
+
+      repository = MethodLog::Repository.new(path: repository_path)
+      commit = repository.commits.first
+      expect(commit.source_files).to be_empty
+    end
   end
 end

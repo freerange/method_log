@@ -26,14 +26,9 @@ end
     expect(definition_one.hash).to eq(definition_two.hash)
   end
 
-  it 'describes method definition' do
+  it 'provides access to the method source' do
     definition = MethodLog::MethodDefinition.new(source_file: source_file, lines: 1..3)
 
-    expect(definition.to_s).to eq(%{
-  path/to/source.rb:1..3
-  def bar
-    # implementation
-  end
-    }.strip)
+    expect(definition.source).to eq(%{  def bar\n    # implementation\n  end})
   end
 end

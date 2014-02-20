@@ -54,5 +54,32 @@ describe MethodLog::Commit do
       commit = repository.commits.first
       expect(commit.source_files).to be_empty
     end
+
+    it 'makes author available' do
+      user = { email: 'test@example.com', name: 'test', time: Time.now.round }
+      source_file = MethodLog::SourceFile.new(path: 'path/to/source.rb', source: 'source')
+
+      repository = MethodLog::Repository.new(path: repository_path)
+      commit = repository.build_commit
+      commit.add(source_file)
+      commit.apply(user: user)
+
+      repository = MethodLog::Repository.new(path: repository_path)
+      commit = repository.commits.first
+      expect(commit.author).to eq(user)
+    end
+
+    it 'makes message available' do
+      source_file = MethodLog::SourceFile.new(path: 'path/to/source.rb', source: 'source')
+
+      repository = MethodLog::Repository.new(path: repository_path)
+      commit = repository.build_commit
+      commit.add(source_file)
+      commit.apply(message: 'commit-message')
+
+      repository = MethodLog::Repository.new(path: repository_path)
+      commit = repository.commits.first
+      expect(commit.message).to eq('commit-message')
+    end
   end
 end

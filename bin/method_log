@@ -7,6 +7,13 @@ require 'method_log/api'
 
 repository = MethodLog::Repository.new(path: Dir.pwd)
 api = MethodLog::API.new(repository: repository)
-api.history(ARGV[0]).each do |method_commit|
-  puts method_commit
+api.diffs(ARGV[0]).each do |method_commit, method_diff|
+  puts "commit #{method_commit.sha}"
+  puts "Author: #{method_commit.author[:name]} <#{method_commit.author[:email]}>"
+  puts "Date:   #{method_commit.author[:time].strftime('%a %b %-e %T %Y %z')}"
+  puts
+  puts method_commit.message
+  puts
+  puts method_diff.to_s(:color)
+  puts
 end

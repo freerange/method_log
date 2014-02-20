@@ -17,15 +17,13 @@ module MethodLog
       @index.add(path: source_file.path, oid: oid, mode: 0100644)
     end
 
-    def apply
+    def apply(user: { email: 'test@example.com', name: 'test', time: Time.now }, message: 'commit-message')
       tree = @index.write_tree(@repository)
       parents = @repository.empty? ? [] : [@repository.head.target].compact
-      user = { email: 'test@example.com', name: 'test', time: Time.now }
-      @sha = Rugged::Commit.create(@repository, tree: tree, parents: parents, update_ref: 'HEAD', author: user, committer: user, message: 'commit-message')
+      @sha = Rugged::Commit.create(@repository, tree: tree, parents: parents, update_ref: 'HEAD', author: user, committer: user, message: message)
     end
 
     def source_files
-      commit = @repository.lookup(sha)
       source_files = []
       commit.tree.walk_blobs do |root, blob_hash|
         name = blob_hash[:name]
@@ -35,6 +33,14 @@ module MethodLog
         source_files << SourceFile.new(path: path, source: source)
       end
       source_files
+    end
+
+    def author
+      commit.author
+    end
+
+    def message
+      commit.message
     end
 
     def ==(other)
@@ -47,6 +53,12 @@ module MethodLog
 
     def to_s
       sha
+    end
+
+    private
+
+    def commit
+      @commit ||= @repository.lookup(sha)
     end
   end
 end

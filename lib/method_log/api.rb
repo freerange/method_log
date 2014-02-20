@@ -1,5 +1,6 @@
 require 'method_log/method_finder'
 require 'method_log/method_commit'
+require 'method_log/method_diff'
 
 module MethodLog
   class API
@@ -15,6 +16,17 @@ module MethodLog
             definitions += Array(method_finder.find(method_identifier))
           end
           yielder << MethodCommit.new(commit: commit, method_definition: method_definitions.first)
+        end
+      end
+    end
+
+    def diffs(method_identifier)
+      Enumerator.new do |yielder|
+        history(method_identifier).each_cons(2) do |(commit, parent)|
+          diff = MethodDiff.new(commit: commit, parent: parent)
+          unless diff.empty?
+            yielder << [commit, diff]
+          end
         end
       end
     end

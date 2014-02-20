@@ -13,11 +13,8 @@ module MethodLog
       [source_file, lines].hash
     end
 
-    def to_s
-      [
-        "#{source_file.path}:#{lines}",
-        source_file.snippet(lines)
-      ].join($/)
+    def source
+      source_file.snippet(lines)
     end
 
     protected

@@ -13,8 +13,20 @@ module MethodLog
       [commit, method_definition].hash
     end
 
-    def to_s
-      "#{commit}: #{method_definition}"
+    def sha
+      commit.sha
+    end
+
+    def author
+      commit.author
+    end
+
+    def message
+      commit.message
+    end
+
+    def method_source
+      method_definition && method_definition.source + $/
     end
 
     protected

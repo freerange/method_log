@@ -21,12 +21,8 @@ This is a work-in-progress and nowhere near production-ready.
 ### Todo
 
 * Support earlier versions of Ruby (it ought to be possible to support down to v1.9.3 fairly easily)
-* Support class methods
-* Support namespaced classes e.g. `class Foo::Bar`
+* Support absolute namespaces e.g. `class ::Foo::Bar`
 * Support for Rspec tests
-* Display diffs in method implementation between commits c.f. `git log --patch`
-* Only display diffs when method implementation has changed
-* Default to looking for git repo in current working directory
 * Default to looking for commits in current git branch
 * Maybe add as new git command or extension to existing command e.g. `git log`
 * Optimise search for method definitions:

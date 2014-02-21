@@ -6,7 +6,7 @@ module MethodLog
       end
 
       def lookup(name)
-        raise NameError.new("uninitialized constant #{name}")
+        nil
       end
     end
 
@@ -31,7 +31,9 @@ module MethodLog
 
     def for(modules)
       scope = self
-      modules.each { |m| scope = scope.lookup(m) }
+      modules.each do |mod|
+        scope = scope.lookup(mod) || scope.define(mod)
+      end
       scope
     end
 

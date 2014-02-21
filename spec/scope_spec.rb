@@ -57,10 +57,6 @@ describe MethodLog::Scope do
     expect(c.lookup(:C)).to eq(c)
   end
 
-  it 'raises exception if module is not found' do
-    expect { root.lookup(:A) }.to raise_error(NameError, 'uninitialized constant A')
-  end
-
   it 'looks up qualified module' do
     a = root.define(:A)
     b = a.define(:B)
@@ -68,6 +64,16 @@ describe MethodLog::Scope do
     expect(c.for([:A])).to eq(a)
     expect(c.for([:A, :B])).to eq(b)
     expect(c.for([:A, :B, :C])).to eq(c)
+  end
+
+  it 'defines missing modules' do
+    root.for([:A, :B, :C])
+    a = root.lookup(:A)
+    b = a.lookup(:B)
+    c = b.lookup(:C)
+    expect(a).not_to be_nil
+    expect(b).not_to be_nil
+    expect(c).not_to be_nil
   end
 end
 

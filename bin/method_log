@@ -8,11 +8,12 @@ require 'trollop'
 
 options = Trollop::options do
   opt :patch, 'Generate patch.', short: 'p'
+  opt :max_count, 'Limit the number of commits to output.', type: :integer, short: 'n'
 end
 
 repository = MethodLog::Repository.new(path: Dir.pwd)
 api = MethodLog::API.new(repository: repository)
-api.diffs(ARGV[0]).each do |method_commit, method_diff|
+api.diffs(ARGV[0], max_count: options[:max_count]).each do |method_commit, method_diff|
   puts "commit #{method_commit.sha}"
   puts "Author: #{method_commit.author[:name]} <#{method_commit.author[:email]}>"
   puts "Date:   #{method_commit.author[:time].strftime('%a %b %-e %T %Y %z')}"

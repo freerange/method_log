@@ -54,7 +54,7 @@ module MethodLog
         constants = process_const(node)
         @scope.for(constants).singleton
       else
-        raise
+        @scope.define(node.inspect).singleton
       end
     end
 

@@ -2,12 +2,12 @@ require 'diffy'
 
 module MethodLog
   class MethodDiff
-    def initialize(commit: nil, parent: nil)
-      @commit, @parent = commit, parent
+    def initialize(first_commit: nil, second_commit: nil)
+      @first_commit, @second_commit = first_commit, second_commit
     end
 
     def to_s(mode = :text)
-      Diffy::Diff.new(@commit.method_source, @parent.method_source).to_s(mode)
+      Diffy::Diff.new(@first_commit.method_source, @second_commit.method_source).to_s(mode)
     end
 
     def empty?

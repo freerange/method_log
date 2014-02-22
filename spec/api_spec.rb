@@ -62,8 +62,8 @@ end
     method_commit, method_diff = api.diffs('Foo#bar').first
     expect(method_diff.to_s.strip).to eq(%{
    def bar
--    # implementation 2
-+    # implementation 1
+-    # implementation 1
++    # implementation 2
    end
     }.strip)
   end

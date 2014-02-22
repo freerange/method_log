@@ -225,4 +225,27 @@ end
 
     expect(method_definition).to eq(MethodLog::MethodDefinition.new(source_file: foo, lines: 4..6))
   end
+
+  it 'finds definition of class method on ambiguous module referenced via top-level module' do
+    foo = MethodLog::SourceFile.new(path: 'foo.rb', source: %{
+module Foo
+  class Bar; end
+end
+
+module Baz
+  module Foo
+    class Bar; end
+  end
+
+  def (::Foo::Bar).foo
+    # implementation
+  end
+end
+    }.strip)
+
+    method_finder = MethodLog::MethodFinder.new(source_file: foo)
+    method_definition = method_finder.find('Foo::Bar.foo')
+
+    expect(method_definition).to eq(MethodLog::MethodDefinition.new(source_file: foo, lines: 9..11))
+  end
 end

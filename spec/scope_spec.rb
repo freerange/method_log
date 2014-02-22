@@ -75,5 +75,22 @@ describe MethodLog::Scope do
     expect(b).not_to be_nil
     expect(c).not_to be_nil
   end
+
+  it 'returns root scope' do
+    a = root.define(:A)
+    b = a.define(:B)
+    c = b.define(:C)
+    expect(c.root).to eq(root)
+  end
+
+  it 'looks up ambiguous module via top-level module' do
+    a = root.define(:A)
+    b = a.define(:B)
+    c = root.define(:C)
+    aa = c.define(:A)
+    bb = aa.define(:B)
+
+    expect(c.for([:root, :A, :B])).to eq(b)
+  end
 end
 

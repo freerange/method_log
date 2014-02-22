@@ -18,6 +18,10 @@ module MethodLog
       def names
         []
       end
+
+      def root
+        self
+      end
     end
 
     attr_reader :parent
@@ -31,6 +35,10 @@ module MethodLog
 
     def for(modules)
       scope = self
+      if modules.first == :root
+        scope = root
+        modules.unshift
+      end
       modules.each do |mod|
         scope = scope.lookup(mod) || scope.define(mod)
       end
@@ -51,6 +59,10 @@ module MethodLog
 
     def method_identifier(name)
       [names.join('::'), separator, name].join
+    end
+
+    def root
+      parent.root
     end
 
     protected

@@ -60,7 +60,8 @@ module MethodLog
 
     def process_const(node, namespaces = [])
       scope_node, name = *node
-      namespaces.unshift(name)
+      namespace = (node.type == :cbase) ? :root : name
+      namespaces.unshift(namespace)
       if scope_node
         process_const(scope_node, namespaces)
       end

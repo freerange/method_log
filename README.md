@@ -21,14 +21,12 @@ This is a work-in-progress and nowhere near production-ready.
 ### Todo
 
 * Support earlier versions of Ruby (it ought to be possible to support down to v1.9.3 fairly easily)
-* Support absolute namespaces e.g. `class ::Foo::Bar`
 * Support for Rspec tests
 * Default to looking for commits in current git branch
 * Maybe add as new git command or extension to existing command e.g. `git log`
 * Optimise search for method definitions:
   * Only consider commits where file that last contained method has changed
   * First look in file where method was last defined
-  * Simple text search for files containing method name to narrow files that need to be parsed
 * Find "similar" method implementations e.g. by comparing ASTs of implementations
 
 ### Credits

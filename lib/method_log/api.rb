@@ -9,9 +9,11 @@ module MethodLog
     end
 
     def history(method_identifier, max_count: nil)
+      method_name = method_identifier.split(Regexp.union('#', '.')).last
       Enumerator.new do |yielder|
         @repository.commits(max_count: max_count).each do |commit|
-          method_definitions = commit.source_files.inject([]) do |definitions, source_file|
+          source_files = commit.source_files.select { |sf| sf.source[Regexp.new(method_name)] }
+          method_definitions = source_files.inject([]) do |definitions, source_file|
             method_finder = MethodFinder.new(source_file: source_file)
             definitions += Array(method_finder.find(method_identifier))
           end

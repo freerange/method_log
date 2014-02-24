@@ -21,6 +21,8 @@ This is a work-in-progress and nowhere near production-ready.
 ### Todo
 
 * Support earlier versions of Ruby (it ought to be possible to support down to v1.9.3 fairly easily)
+* Investigate whether parser gem can only parse source code written using the current Ruby version
+  * It would be nice to have a better error message if parsing fails
 * Support for Rspec tests
 * Default to looking for commits in current git branch
 * Maybe add as new git command or extension to existing command e.g. `git log`

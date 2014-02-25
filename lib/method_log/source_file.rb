@@ -1,11 +1,16 @@
 module MethodLog
   class SourceFile
     attr_reader :path
-    attr_reader :source
 
-    def initialize(path: nil, source: nil)
+    def initialize(path: nil, source: nil, repository: nil, sha: nil)
       @path = path
       @source = source
+      @repository = repository
+      @sha = sha
+    end
+
+    def source
+      @source ||= @repository.lookup(@sha).text
     end
 
     def ==(other)

@@ -29,8 +29,7 @@ module MethodLog
           name = blob_hash[:name]
           next unless File.extname(name) == '.rb'
           path = root.empty? ? name : File.join(root, name)
-          source = @repository.lookup(blob_hash[:oid]).text
-          yielder << SourceFile.new(path: path, source: source)
+          yielder << SourceFile.new(path: path, repository: @repository, sha: blob_hash[:oid])
         end
       end
     end

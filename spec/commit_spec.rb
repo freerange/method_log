@@ -39,7 +39,7 @@ describe MethodLog::Commit do
 
       repository = MethodLog::Repository.new(path: repository_path)
       commit = repository.commits.first
-      expect(commit.source_files).to eq([source_one, source_two])
+      expect(commit.source_files.to_a).to eq([source_one, source_two])
     end
 
     it 'only includes source files with ruby file extension' do
@@ -52,7 +52,7 @@ describe MethodLog::Commit do
 
       repository = MethodLog::Repository.new(path: repository_path)
       commit = repository.commits.first
-      expect(commit.source_files).to be_empty
+      expect(commit.source_files.to_a).to be_empty
     end
 
     it 'makes author available' do

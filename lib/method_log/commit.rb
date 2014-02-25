@@ -24,15 +24,15 @@ module MethodLog
     end
 
     def source_files
-      source_files = []
-      commit.tree.walk_blobs do |root, blob_hash|
-        name = blob_hash[:name]
-        next unless File.extname(name) == '.rb'
-        path = root.empty? ? name : File.join(root, name)
-        source = @repository.lookup(blob_hash[:oid]).text
-        source_files << SourceFile.new(path: path, source: source)
+      Enumerator.new do |yielder|
+        commit.tree.walk_blobs do |root, blob_hash|
+          name = blob_hash[:name]
+          next unless File.extname(name) == '.rb'
+          path = root.empty? ? name : File.join(root, name)
+          source = @repository.lookup(blob_hash[:oid]).text
+          yielder << SourceFile.new(path: path, source: source)
+        end
       end
-      source_files
     end
 
     def author

@@ -67,4 +67,39 @@ end
    end
     }.strip)
   end
+
+  it 'finds method which is defined in one commit, then removed in the next commit, and defined again in the next commit' do
+    foo_with_bar = MethodLog::SourceFile.new(path: 'foo.rb', source: %{
+class Foo
+  def bar; end
+end
+    }.strip)
+
+    foo_without_bar = MethodLog::SourceFile.new(path: 'foo.rb', source: %{
+class Foo
+end
+    }.strip)
+
+    repository = MethodLog::Repository.new(path: repository_path)
+
+    commit_1 = repository.build_commit
+    commit_1.add(foo_with_bar)
+    repository.add(commit_1)
+
+    commit_2 = repository.build_commit
+    commit_2.add(foo_without_bar)
+    repository.add(commit_2)
+
+    commit_3 = repository.build_commit
+    commit_3.add(foo_with_bar)
+    repository.add(commit_3)
+
+    repository = MethodLog::Repository.new(path: repository_path)
+    api = MethodLog::API.new(repository: repository)
+    diffs = api.diffs('Foo#bar').map(&:last).map(&:to_s)
+    expect(diffs).to eq([
+      "+  def bar; end\n",
+      "-  def bar; end\n"
+    ])
+  end
 end

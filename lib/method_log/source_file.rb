@@ -1,6 +1,7 @@
 module MethodLog
   class SourceFile
     attr_reader :path
+    attr_reader :sha
 
     def initialize(path: nil, source: nil, repository: nil, sha: nil)
       @path = path
@@ -18,7 +19,7 @@ module MethodLog
     end
 
     def hash
-      [path, source].hash
+      @sha || [path, source].hash
     end
 
     def snippet(range)

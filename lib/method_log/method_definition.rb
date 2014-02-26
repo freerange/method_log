@@ -1,5 +1,7 @@
 module MethodLog
   class MethodDefinition
+    attr_reader :source_file
+
     def initialize(source_file: nil, lines: nil)
       @source_file = source_file
       @lines = lines
@@ -19,7 +21,6 @@ module MethodLog
 
     protected
 
-    attr_reader :source_file
     attr_reader :lines
   end
 end

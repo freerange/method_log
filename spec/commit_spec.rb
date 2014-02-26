@@ -55,6 +55,20 @@ describe MethodLog::Commit do
       expect(commit.source_files.to_a).to be_empty
     end
 
+    it 'indicates whether it contains a given source file' do
+      source_file = MethodLog::SourceFile.new(path: 'path/to/source.rb', source: 'source-file')
+
+      repository = MethodLog::Repository.new(path: repository_path)
+      commit = repository.build_commit
+      commit.add(source_file)
+      commit.apply
+      source_file = commit.source_files.first
+
+      repository = MethodLog::Repository.new(path: repository_path)
+      commit = repository.commits.first
+      expect(commit.contains?(source_file)).to be_true
+    end
+
     it 'makes author available' do
       user = { email: 'test@example.com', name: 'test', time: Time.now.round }
       source_file = MethodLog::SourceFile.new(path: 'path/to/source.rb', source: 'source')

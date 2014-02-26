@@ -24,7 +24,7 @@ module MethodLog
     end
 
     def source_files
-      Enumerator.new do |yielder|
+      @source_files ||= Enumerator.new do |yielder|
         commit.tree.walk_blobs do |root, blob_hash|
           name = blob_hash[:name]
           next unless File.extname(name) == '.rb'
@@ -32,6 +32,10 @@ module MethodLog
           yielder << SourceFile.new(path: path, repository: @repository, sha: blob_hash[:oid])
         end
       end
+    end
+
+    def contains?(source_file)
+      source_files_by_path[source_file.path] == source_file
     end
 
     def author
@@ -58,6 +62,13 @@ module MethodLog
 
     def commit
       @commit ||= @repository.lookup(sha)
+    end
+
+    def source_files_by_path
+      source_files.inject({}) do |hash, source_file|
+        hash[source_file.path] = source_file
+        hash
+      end
     end
   end
 end

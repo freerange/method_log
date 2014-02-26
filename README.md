@@ -27,7 +27,6 @@ This is a work-in-progress and nowhere near production-ready.
 * Default to looking for commits in current git branch
 * Maybe add as new git command or extension to existing command e.g. `git log`
 * Optimise search for method definitions:
-  * Only consider commits where file that last contained method has changed
   * First look in file where method was last defined
 * By default stop when method disappears from history
 * Find "similar" method implementations e.g. by comparing ASTs of implementations

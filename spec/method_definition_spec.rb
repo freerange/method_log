@@ -6,13 +6,13 @@ require 'method_log/source_file'
 module MethodLog
   describe MethodDefinition do
     let(:source_file) do
-      SourceFile.new(path: 'path/to/source.rb', source: unindent(%{
+      source(path: 'path/to/source.rb', source: %{
         class Foo
           def bar
             # implementation
           end
         end
-      }))
+      })
     end
 
     it 'is equal to another method definition with same source file and line numbers' do

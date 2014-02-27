@@ -31,8 +31,8 @@ module MethodLog
       end
 
       it 'stores source files added to a commit in the repository against a real commit' do
-        source_one = SourceFile.new(path: 'path/to/source_one.rb', source: 'source-one')
-        source_two = SourceFile.new(path: 'path/to/source_two.rb', source: 'source-two')
+        source_one = source(path: 'path/to/source_one.rb', source: 'source-one')
+        source_two = source(path: 'path/to/source_two.rb', source: 'source-two')
 
         repository = Repository.new(path: repository_path)
         commit = repository.build_commit
@@ -46,7 +46,7 @@ module MethodLog
       end
 
       it 'only includes source files with ruby file extension' do
-        source_file = SourceFile.new(path: 'path/to/source_one.py', source: 'source-file')
+        source_file = source(path: 'path/to/source_one.py', source: 'source-file')
 
         repository = Repository.new(path: repository_path)
         commit = repository.build_commit
@@ -59,7 +59,7 @@ module MethodLog
       end
 
       it 'indicates whether it contains a given source file' do
-        source_file = SourceFile.new(path: 'path/to/source.rb', source: 'source-file')
+        source_file = source(path: 'path/to/source.rb', source: 'source-file')
 
         repository = Repository.new(path: repository_path)
         commit = repository.build_commit
@@ -74,7 +74,7 @@ module MethodLog
 
       it 'makes author available' do
         user = { email: 'test@example.com', name: 'test', time: Time.now.round }
-        source_file = SourceFile.new(path: 'path/to/source.rb', source: 'source')
+        source_file = source(path: 'path/to/source.rb', source: 'source')
 
         repository = Repository.new(path: repository_path)
         commit = repository.build_commit
@@ -87,7 +87,7 @@ module MethodLog
       end
 
       it 'makes message available' do
-        source_file = SourceFile.new(path: 'path/to/source.rb', source: 'source')
+        source_file = source(path: 'path/to/source.rb', source: 'source')
 
         repository = Repository.new(path: repository_path)
         commit = repository.build_commit

@@ -1,7 +1,11 @@
 $LOAD_PATH.unshift(File.expand_path('../../lib', __FILE__))
 
 module MethodLog
-  module SourceCodeHelper
+  module SourceHelper
+    def source(source: nil, **args)
+      SourceFile.new(source: source ? unindent(source) : source, **args)
+    end
+
     def unindent(code)
       lines = code.split($/)
       indent = lines.reject { |l| l.strip.length == 0 }.map { |l| l[/^\s*/].length }.min
@@ -17,5 +21,5 @@ module MethodLog
 end
 
 RSpec.configure do |config|
-  config.include MethodLog::SourceCodeHelper
+  config.include MethodLog::SourceHelper
 end

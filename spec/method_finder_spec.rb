@@ -6,13 +6,13 @@ require 'method_log/method_finder'
 module MethodLog
   describe MethodFinder do
     it 'finds definition of instance method on class' do
-      foo = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo = source(path: 'foo.rb', source: %{
         class Foo
           def bar
             # implementation
           end
         end
-      }))
+      })
 
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo#bar')
@@ -21,13 +21,13 @@ module MethodLog
     end
 
     it 'finds definition of instance method on module' do
-      foo = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo = source(path: 'foo.rb', source: %{
         module Foo
           def bar
             # implementation
           end
         end
-      }))
+      })
 
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo#bar')
@@ -36,7 +36,7 @@ module MethodLog
     end
 
     it 'finds definition of instance method on class within module' do
-      foo = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo = source(path: 'foo.rb', source: %{
         module Foo
           class Bar
             def baz
@@ -44,7 +44,7 @@ module MethodLog
             end
           end
         end
-      }))
+      })
 
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo::Bar#baz')
@@ -53,7 +53,7 @@ module MethodLog
     end
 
     it 'finds definition of instance method on namespaced class within previously defined module' do
-      foo = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo = source(path: 'foo.rb', source: %{
         module Foo
         end
         class Foo::Bar
@@ -61,7 +61,7 @@ module MethodLog
             # implementation
           end
         end
-      }))
+      })
 
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo::Bar#baz')
@@ -70,7 +70,7 @@ module MethodLog
     end
 
     it 'finds definition of instance method on namespaced module within previously defined module' do
-      foo = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo = source(path: 'foo.rb', source: %{
         module Foo
         end
         module Foo::Bar
@@ -78,7 +78,7 @@ module MethodLog
             # implementation
           end
         end
-      }))
+      })
 
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo::Bar#baz')
@@ -87,13 +87,13 @@ module MethodLog
     end
 
     it 'finds definition of class method on class' do
-      foo = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo = source(path: 'foo.rb', source: %{
         module Foo
           def self.bar
             # implementation
           end
         end
-      }))
+      })
 
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo.bar')
@@ -102,13 +102,13 @@ module MethodLog
     end
 
     it 'finds definition of class method on class with explicit reference to class' do
-      foo = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo = source(path: 'foo.rb', source: %{
         module Foo
           def Foo.bar
             # implementation
           end
         end
-      }))
+      })
 
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo.bar')
@@ -117,7 +117,7 @@ module MethodLog
     end
 
     it 'finds definition of class method on class with explicit reference to namespaced class' do
-      foo = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo = source(path: 'foo.rb', source: %{
         module Foo
           class Bar
             def (Foo::Bar).baz
@@ -125,7 +125,7 @@ module MethodLog
             end
           end
         end
-      }))
+      })
 
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo::Bar.baz')
@@ -134,7 +134,7 @@ module MethodLog
     end
 
     it 'finds definition of class method on class with explicit reference to namespaced class outside current scope' do
-      foo = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo = source(path: 'foo.rb', source: %{
         class Foo
         end
         class Bar
@@ -142,7 +142,7 @@ module MethodLog
             # implementation
           end
         end
-      }))
+      })
 
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo.baz')
@@ -151,7 +151,7 @@ module MethodLog
     end
 
     it 'finds definition of class method on class when singleton class is re-opened' do
-      foo = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo = source(path: 'foo.rb', source: %{
         class Foo
           class << self
             def bar
@@ -159,7 +159,7 @@ module MethodLog
             end
           end
         end
-      }))
+      })
 
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo.bar')
@@ -168,7 +168,7 @@ module MethodLog
     end
 
     it 'finds definition of class method on class when singleton class is re-opened with explicit reference to class' do
-      foo = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo = source(path: 'foo.rb', source: %{
         class Foo
           class << Foo
             def bar
@@ -176,7 +176,7 @@ module MethodLog
             end
           end
         end
-      }))
+      })
 
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo.bar')
@@ -185,7 +185,7 @@ module MethodLog
     end
 
     it 'finds definition of class method on class when singleton class is re-opened with explicit reference to class outside current scope' do
-      foo = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo = source(path: 'foo.rb', source: %{
         class Foo
         end
         class Bar
@@ -195,7 +195,7 @@ module MethodLog
             end
           end
         end
-      }))
+      })
 
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo.bar')
@@ -204,7 +204,7 @@ module MethodLog
     end
 
     it 'finds definition of class method on unknown object when singleton class is re-opened' do
-      foo = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo = source(path: 'foo.rb', source: %{
         class Foo
           def initialize
             @foo = new
@@ -215,7 +215,7 @@ module MethodLog
             end
           end
         end
-      }))
+      })
 
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo::(ivar :@foo).bar')
@@ -224,7 +224,7 @@ module MethodLog
     end
 
     it 'finds definition of class method on ambiguous module referenced via top-level module' do
-      foo = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo = source(path: 'foo.rb', source: %{
         module Foo
           class Bar; end
         end
@@ -236,7 +236,7 @@ module MethodLog
             # implementation
           end
         end
-      }))
+      })
 
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo::Bar.foo')

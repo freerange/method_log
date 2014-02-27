@@ -18,6 +18,13 @@ module MethodLog
       @commits << commit
     end
 
+    def commit(*source_files)
+      build_commit.tap do |commit|
+        source_files.each { |sf| commit.add(sf) }
+        add(commit)
+      end
+    end
+
     def commits(max_count: nil)
       Enumerator.new do |yielder|
         if @repository.ref('refs/heads/master')

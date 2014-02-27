@@ -21,32 +21,26 @@ module MethodLog
     end
 
     it 'finds class instance method in repository with two commits with single source file' do
-      foo_1 = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo_1 = source(path: 'foo.rb', source: %{
         class Foo
           def bar
             # implementation 1
           end
         end
-      }))
+      })
 
-      foo_2 = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo_2 = source(path: 'foo.rb', source: %{
         # move method definition down one line
         class Foo
           def bar
             # implementation 2
           end
         end
-      }))
+      })
 
       repository = Repository.new(path: repository_path)
-
-      commit_1 = repository.build_commit
-      commit_1.add(foo_1)
-      repository.add(commit_1)
-
-      commit_2 = repository.build_commit
-      commit_2.add(foo_2)
-      repository.add(commit_2)
+      commit_1 = repository.commit(foo_1)
+      commit_2 = repository.commit(foo_2)
 
       repository = Repository.new(path: repository_path)
       api = API.new(repository: repository)
@@ -70,30 +64,21 @@ module MethodLog
     end
 
     it 'finds method which is defined in one commit, then removed in the next commit, and defined again in the next commit' do
-      foo_with_bar = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo_with_bar = source(path: 'foo.rb', source: %{
         class Foo
           def bar; end
         end
-      }))
+      })
 
-      foo_without_bar = SourceFile.new(path: 'foo.rb', source: unindent(%{
+      foo_without_bar = source(path: 'foo.rb', source: %{
         class Foo
         end
-      }))
+      })
 
       repository = Repository.new(path: repository_path)
-
-      commit_1 = repository.build_commit
-      commit_1.add(foo_with_bar)
-      repository.add(commit_1)
-
-      commit_2 = repository.build_commit
-      commit_2.add(foo_without_bar)
-      repository.add(commit_2)
-
-      commit_3 = repository.build_commit
-      commit_3.add(foo_with_bar)
-      repository.add(commit_3)
+      commit_1 = repository.commit(foo_with_bar)
+      commit_2 = repository.commit(foo_without_bar)
+      commit_3 = repository.commit(foo_with_bar)
 
       repository = Repository.new(path: repository_path)
       api = API.new(repository: repository)

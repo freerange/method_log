@@ -9,21 +9,21 @@ module MethodLog
     let(:blob) { double(:blob, text: 'source') }
 
     it 'is equal to another source file with same path and source' do
-      file_one = SourceFile.new(path: 'path/to/source.rb', source: 'source-one')
-      file_two = SourceFile.new(path: 'path/to/source.rb', source: 'source-one')
+      file_one = source(path: 'path/to/source.rb', source: 'source-one')
+      file_two = source(path: 'path/to/source.rb', source: 'source-one')
 
       expect(file_one).to eq(file_two)
     end
 
     it 'has same hash as another source file with same path and source' do
-      file_one = SourceFile.new(path: 'path/to/source.rb', source: 'source-one')
-      file_two = SourceFile.new(path: 'path/to/source.rb', source: 'source-one')
+      file_one = source(path: 'path/to/source.rb', source: 'source-one')
+      file_two = source(path: 'path/to/source.rb', source: 'source-one')
 
       expect(file_one.hash).to eq(file_two.hash)
     end
 
     it 'describes source file' do
-      file = SourceFile.new(path: 'path/to/source.rb', source: unindent(%{
+      file = source(path: 'path/to/source.rb', source: unindent(%{
         class Foo
           def bar
             # implementation
@@ -40,7 +40,7 @@ module MethodLog
 
     it 'looks up source in repository using SHA if no source set' do
       repository.stub(:lookup).with(sha).and_return(blob)
-      file = SourceFile.new(path: 'path/to/source.rb', repository: repository, sha: sha)
+      file = source(path: 'path/to/source.rb', repository: repository, sha: sha)
       expect(file.source).to eq('source')
     end
   end

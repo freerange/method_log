@@ -22,19 +22,19 @@ describe MethodLog::SourceFile do
   end
 
   it 'describes source file' do
-    file = MethodLog::SourceFile.new(path: 'path/to/source.rb', source: %{
-class Foo
-  def bar
-    # implementation
-  end
-end
-    }.strip)
+    file = MethodLog::SourceFile.new(path: 'path/to/source.rb', source: unindent(%{
+      class Foo
+        def bar
+          # implementation
+        end
+      end
+    }))
 
-    expect(file.snippet(1..3).strip).to eq(%{
-  def bar
-    # implementation
-  end
-    }.strip)
+    expect(file.snippet(1..3)).to eq(indent(unindent(%{
+      def bar
+        # implementation
+      end
+    })))
   end
 
   it 'looks up source in repository using SHA if no source set' do

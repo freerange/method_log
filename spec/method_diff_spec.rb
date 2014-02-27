@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 require 'method_log/method_diff'
 
 describe MethodLog::MethodDiff do

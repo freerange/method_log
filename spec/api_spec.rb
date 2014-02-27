@@ -20,22 +20,22 @@ describe MethodLog::API do
   end
 
   it 'finds class instance method in repository with two commits with single source file' do
-    foo_1 = MethodLog::SourceFile.new(path: 'foo.rb', source: %{
-class Foo
-  def bar
-    # implementation 1
-  end
-end
-    }.strip)
+    foo_1 = MethodLog::SourceFile.new(path: 'foo.rb', source: unindent(%{
+      class Foo
+        def bar
+          # implementation 1
+        end
+      end
+    }))
 
-    foo_2 = MethodLog::SourceFile.new(path: 'foo.rb', source: %{
-# move method definition down one line
-class Foo
-  def bar
-    # implementation 2
-  end
-end
-    }.strip)
+    foo_2 = MethodLog::SourceFile.new(path: 'foo.rb', source: unindent(%{
+      # move method definition down one line
+      class Foo
+        def bar
+          # implementation 2
+        end
+      end
+    }))
 
     repository = MethodLog::Repository.new(path: repository_path)
 
@@ -60,25 +60,25 @@ end
     expect(method_commits).to eq([method_commit_2, method_commit_1])
 
     method_commit, method_diff = api.diffs('Foo#bar').first
-    expect(method_diff.to_s.strip).to eq(%{
-   def bar
--    # implementation 1
-+    # implementation 2
-   end
-    }.strip)
+    expect(method_diff.to_s.chomp).to eq(unindent(%{
+         def bar
+      -    # implementation 1
+      +    # implementation 2
+         end
+    }))
   end
 
   it 'finds method which is defined in one commit, then removed in the next commit, and defined again in the next commit' do
-    foo_with_bar = MethodLog::SourceFile.new(path: 'foo.rb', source: %{
-class Foo
-  def bar; end
-end
-    }.strip)
+    foo_with_bar = MethodLog::SourceFile.new(path: 'foo.rb', source: unindent(%{
+      class Foo
+        def bar; end
+      end
+    }))
 
-    foo_without_bar = MethodLog::SourceFile.new(path: 'foo.rb', source: %{
-class Foo
-end
-    }.strip)
+    foo_without_bar = MethodLog::SourceFile.new(path: 'foo.rb', source: unindent(%{
+      class Foo
+      end
+    }))
 
     repository = MethodLog::Repository.new(path: repository_path)
 

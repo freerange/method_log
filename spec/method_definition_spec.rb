@@ -1,15 +1,17 @@
+require 'spec_helper'
+
 require 'method_log/method_definition'
 require 'method_log/source_file'
 
 describe MethodLog::MethodDefinition do
   let(:source_file) do
-    MethodLog::SourceFile.new(path: 'path/to/source.rb', source: %{
-class Foo
-  def bar
-    # implementation
-  end
-end
-    }.strip)
+    MethodLog::SourceFile.new(path: 'path/to/source.rb', source: unindent(%{
+      class Foo
+        def bar
+          # implementation
+        end
+      end
+    }))
   end
 
   it 'is equal to another method definition with same source file and line numbers' do
@@ -29,6 +31,6 @@ end
   it 'provides access to the method source' do
     definition = MethodLog::MethodDefinition.new(source_file: source_file, lines: 1..3)
 
-    expect(definition.source).to eq(%{  def bar\n    # implementation\n  end})
+    expect(definition.source).to eq(source_file.snippet(1..3))
   end
 end

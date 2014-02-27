@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 require 'method_log/repository'
 require 'method_log/commit'
 require 'method_log/source_file'

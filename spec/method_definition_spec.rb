@@ -3,34 +3,36 @@ require 'spec_helper'
 require 'method_log/method_definition'
 require 'method_log/source_file'
 
-describe MethodLog::MethodDefinition do
-  let(:source_file) do
-    MethodLog::SourceFile.new(path: 'path/to/source.rb', source: unindent(%{
-      class Foo
-        def bar
-          # implementation
+module MethodLog
+  describe MethodDefinition do
+    let(:source_file) do
+      SourceFile.new(path: 'path/to/source.rb', source: unindent(%{
+        class Foo
+          def bar
+            # implementation
+          end
         end
-      end
-    }))
-  end
+      }))
+    end
 
-  it 'is equal to another method definition with same source file and line numbers' do
-    definition_one = MethodLog::MethodDefinition.new(source_file: source_file, lines: 1..3)
-    definition_two = MethodLog::MethodDefinition.new(source_file: source_file, lines: 1..3)
+    it 'is equal to another method definition with same source file and line numbers' do
+      definition_one = MethodDefinition.new(source_file: source_file, lines: 1..3)
+      definition_two = MethodDefinition.new(source_file: source_file, lines: 1..3)
 
-    expect(definition_one).to eq(definition_two)
-  end
+      expect(definition_one).to eq(definition_two)
+    end
 
-  it 'has same hash as another method definition with same path and line numbers' do
-    definition_one = MethodLog::MethodDefinition.new(source_file: source_file, lines: 1..3)
-    definition_two = MethodLog::MethodDefinition.new(source_file: source_file, lines: 1..3)
+    it 'has same hash as another method definition with same path and line numbers' do
+      definition_one = MethodDefinition.new(source_file: source_file, lines: 1..3)
+      definition_two = MethodDefinition.new(source_file: source_file, lines: 1..3)
 
-    expect(definition_one.hash).to eq(definition_two.hash)
-  end
+      expect(definition_one.hash).to eq(definition_two.hash)
+    end
 
-  it 'provides access to the method source' do
-    definition = MethodLog::MethodDefinition.new(source_file: source_file, lines: 1..3)
+    it 'provides access to the method source' do
+      definition = MethodDefinition.new(source_file: source_file, lines: 1..3)
 
-    expect(definition.source).to eq(source_file.snippet(1..3))
+      expect(definition.source).to eq(source_file.snippet(1..3))
+    end
   end
 end

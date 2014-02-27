@@ -58,7 +58,7 @@ end
     method_commit_2 = MethodLog::MethodCommit.new(commit: commit_2, method_definition: method_definition_2)
 
     expect(method_commits).to eq([method_commit_2, method_commit_1])
-    
+
     method_commit, method_diff = api.diffs('Foo#bar').first
     expect(method_diff.to_s.strip).to eq(%{
    def bar

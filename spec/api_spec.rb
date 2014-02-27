@@ -68,7 +68,11 @@ module MethodLog
       }))
 
       api = API.new(repository: Repository.new(path: repository_path))
-      diffs = api.diffs('Foo#bar').map(&:last).map(&:to_s)
+      commits_and_diffs = api.diffs('Foo#bar')
+      method_commits = commits_and_diffs.map(&:first)
+      diffs = commits_and_diffs.map(&:last).map(&:to_s)
+
+      expect(method_commits.map(&:sha)).to eq([commit_3.sha, commit_2.sha])
       expect(diffs).to eq([
         "+  def bar; end\n",
         "-  def bar; end\n"

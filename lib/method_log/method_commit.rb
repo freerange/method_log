@@ -1,5 +1,7 @@
 module MethodLog
   class MethodCommit
+    attr_reader :method_definition
+
     def initialize(commit: nil, method_definition: nil)
       @commit = commit
       @method_definition = method_definition
@@ -32,6 +34,5 @@ module MethodLog
     protected
 
     attr_reader :commit
-    attr_reader :method_definition
   end
 end

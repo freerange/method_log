@@ -49,7 +49,7 @@ module MethodLog
       }))
     end
 
-    it 'finds method which is defined in one commit, then removed in the next commit, and defined again in the next commit' do
+    it 'finds method which is defined, then removed, and then defined again' do
       repository = Repository.new(path: repository_path)
       commit_1 = repository.commit(source(path: 'foo.rb', source: %{
         class Foo
@@ -61,6 +61,11 @@ module MethodLog
         end
       }))
       commit_3 = repository.commit(source(path: 'foo.rb', source: %{
+        class Foo
+          def bar; end
+        end
+      }))
+      commit_4 = repository.commit(source(path: 'foo.rb', source: %{
         class Foo
           def bar; end
         end

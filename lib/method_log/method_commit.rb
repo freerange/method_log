@@ -31,6 +31,10 @@ module MethodLog
       method_definition && method_definition.source + $/
     end
 
+    def source_file
+      method_definition && method_definition.source_file
+    end
+
     protected
 
     attr_reader :commit

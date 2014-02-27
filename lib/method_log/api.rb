@@ -13,7 +13,7 @@ module MethodLog
       Enumerator.new do |yielder|
         last_method_commit = nil
         @repository.commits(max_count: max_count).each do |commit|
-          last_source_file = last_method_commit && last_method_commit.method_definition && last_method_commit.method_definition.source_file
+          last_source_file = last_method_commit && last_method_commit.source_file
           if last_source_file && commit.contains?(last_source_file)
             last_method_commit = MethodCommit.new(commit: commit, method_definition: last_method_commit.method_definition)
           else

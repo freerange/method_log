@@ -38,11 +38,10 @@ module MethodLog
         end
       }))
 
-      api = API.new(repository: Repository.new(path: repository_path))
-      method_commit, method_diff = api.diffs('Foo#bar').first
+      method_commits, method_diffs = commits_and_diffs_for('Foo#bar')
 
-      expect(method_commit.sha).to eq(commit_2.sha)
-      expect(method_diff.to_s.chomp).to eq(unindent(%{
+      expect(method_commits.first.sha).to eq(commit_2.sha)
+      expect(method_diffs.first.to_s.chomp).to eq(unindent(%{
            def bar
         -    # implementation 1
         +    # implementation 2
@@ -67,16 +66,23 @@ module MethodLog
         end
       }))
 
-      api = API.new(repository: Repository.new(path: repository_path))
-      commits_and_diffs = api.diffs('Foo#bar')
-      method_commits = commits_and_diffs.map(&:first)
-      diffs = commits_and_diffs.map(&:last).map(&:to_s)
+      method_commits, method_diffs = commits_and_diffs_for('Foo#bar')
 
       expect(method_commits.map(&:sha)).to eq([commit_3.sha, commit_2.sha])
-      expect(diffs).to eq([
+      expect(method_diffs.map(&:to_s)).to eq([
         "+  def bar; end\n",
         "-  def bar; end\n"
       ])
+    end
+
+    private
+
+    def commits_and_diffs_for(method_identifier)
+      api = API.new(repository: Repository.new(path: repository_path))
+      commits_and_diffs = api.diffs(method_identifier)
+      method_commits = commits_and_diffs.map(&:first)
+      method_diffs = commits_and_diffs.map(&:last)
+      [method_commits, method_diffs]
     end
   end
 end

@@ -17,9 +17,10 @@ module MethodLog
           if last_source_file && commit.contains?(last_source_file)
             last_method_commit = MethodCommit.new(commit: commit, method_definition: last_method_commit.method_definition)
           else
-            source_files = commit.source_files.select { |sf| sf.source[Regexp.new(method_name)] }
             method_definition = nil
-            source_files.map { |sf| MethodFinder.new(source_file: sf) }.each do |method_finder|
+            commit.source_files.each do |source_file|
+              next unless source_file.source[Regexp.new(method_name)]
+              method_finder = MethodFinder.new(source_file: source_file)
               break if method_definition = method_finder.find(method_identifier)
             end
             yielder << last_method_commit if last_method_commit

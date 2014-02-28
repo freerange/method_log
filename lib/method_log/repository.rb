@@ -13,15 +13,11 @@ module MethodLog
       Commit.new(repository: @repository, sha: sha)
     end
 
-    def add(commit)
-      commit.apply
-      @commits << commit
-    end
-
-    def commit(*source_files)
+    def commit(*source_files, user: { email: 'test@example.com', name: 'test', time: Time.now }, message: 'commit-message')
       build_commit.tap do |commit|
         source_files.each { |sf| commit.add(sf) }
-        add(commit)
+        commit.apply(user: user, message: message)
+        @commits << commit
       end
     end
 

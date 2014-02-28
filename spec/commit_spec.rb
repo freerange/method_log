@@ -35,10 +35,7 @@ module MethodLog
         source_two = source(path: 'path/to/source_two.rb', source: 'source-two')
 
         repository = Repository.new(path: repository_path)
-        commit = repository.build_commit
-        commit.add(source_one)
-        commit.add(source_two)
-        commit.apply
+        commit = repository.commit(source_one, source_two)
 
         repository = Repository.new(path: repository_path)
         commit = repository.commits.first
@@ -49,9 +46,7 @@ module MethodLog
         source_file = source(path: 'path/to/source_one.py', source: 'source-file')
 
         repository = Repository.new(path: repository_path)
-        commit = repository.build_commit
-        commit.add(source_file)
-        commit.apply
+        commit = repository.commit(source_file)
 
         repository = Repository.new(path: repository_path)
         commit = repository.commits.first
@@ -62,9 +57,7 @@ module MethodLog
         source_file = source(path: 'path/to/source.rb', source: 'source-file')
 
         repository = Repository.new(path: repository_path)
-        commit = repository.build_commit
-        commit.add(source_file)
-        commit.apply
+        commit = repository.commit(source_file)
         source_file = commit.source_files.first
 
         repository = Repository.new(path: repository_path)
@@ -77,9 +70,7 @@ module MethodLog
         source_file = source(path: 'path/to/source.rb', source: 'source')
 
         repository = Repository.new(path: repository_path)
-        commit = repository.build_commit
-        commit.add(source_file)
-        commit.apply(user: user)
+        commit = repository.commit(source_file, user: user)
 
         repository = Repository.new(path: repository_path)
         commit = repository.commits.first
@@ -90,9 +81,7 @@ module MethodLog
         source_file = source(path: 'path/to/source.rb', source: 'source')
 
         repository = Repository.new(path: repository_path)
-        commit = repository.build_commit
-        commit.add(source_file)
-        commit.apply(message: 'commit-message')
+        commit = repository.commit(source_file, message: 'commit-message')
 
         repository = Repository.new(path: repository_path)
         commit = repository.commits.first

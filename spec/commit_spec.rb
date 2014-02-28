@@ -55,14 +55,19 @@ module MethodLog
 
       it 'indicates whether it contains a given source file' do
         source_file = source(path: 'path/to/source.rb', source: 'source-file')
+        another_source_file = source(path: 'path/to/another_source.rb', source: 'another-source-file')
 
         repository = Repository.new(path: repository_path)
         commit = repository.commit(source_file)
         source_file = commit.source_files.first
+        another_commit = repository.commit(another_source_file)
+        another_source_file = another_commit.source_files.first
 
         repository = Repository.new(path: repository_path)
-        commit = repository.commits.first
+        commit = repository.commits.to_a.last
+
         expect(commit.contains?(source_file)).to be_true
+        expect(commit.contains?(another_source_file)).to be_false
       end
 
       it 'makes author available' do

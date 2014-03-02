@@ -38,6 +38,17 @@ module MethodLog
       source_files_by_path[source_file.path] == source_file
     end
 
+    def find(method_identifier)
+      method_definition = nil
+      method_name = method_identifier.split(Regexp.union('#', '.')).last
+      source_files.each do |source_file|
+        next unless source_file.source[Regexp.new(method_name)]
+        method_finder = MethodFinder.new(source_file: source_file)
+        break if method_definition = method_finder.find(method_identifier)
+      end
+      method_definition
+    end
+
     def author
       commit.author
     end

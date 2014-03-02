@@ -7,6 +7,10 @@ module MethodLog
       @method_definition = method_definition
     end
 
+    def update(commit)
+      @commit = commit
+    end
+
     def ==(other)
       (commit == other.commit) && (method_definition == other.method_definition)
     end

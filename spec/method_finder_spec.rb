@@ -14,7 +14,7 @@ module MethodLog
         end
       })
 
-      method_finder = MethodFinder.new(source_file: foo)
+      method_finder = MethodFinder.new(foo)
       method_definition = method_finder.find('Foo#bar')
 
       expect(method_definition).to eq(MethodDefinition.new(foo, 1..3))
@@ -29,7 +29,7 @@ module MethodLog
         end
       })
 
-      method_finder = MethodFinder.new(source_file: foo)
+      method_finder = MethodFinder.new(foo)
       method_definition = method_finder.find('Foo#bar')
 
       expect(method_definition).to eq(MethodDefinition.new(foo, 1..3))
@@ -46,7 +46,7 @@ module MethodLog
         end
       })
 
-      method_finder = MethodFinder.new(source_file: foo)
+      method_finder = MethodFinder.new(foo)
       method_definition = method_finder.find('Foo::Bar#baz')
 
       expect(method_definition).to eq(MethodDefinition.new(foo, 2..4))
@@ -63,7 +63,7 @@ module MethodLog
         end
       })
 
-      method_finder = MethodFinder.new(source_file: foo)
+      method_finder = MethodFinder.new(foo)
       method_definition = method_finder.find('Foo::Bar#baz')
 
       expect(method_definition).to eq(MethodDefinition.new(foo, 3..5))
@@ -80,7 +80,7 @@ module MethodLog
         end
       })
 
-      method_finder = MethodFinder.new(source_file: foo)
+      method_finder = MethodFinder.new(foo)
       method_definition = method_finder.find('Foo::Bar#baz')
 
       expect(method_definition).to eq(MethodDefinition.new(foo, 3..5))
@@ -95,7 +95,7 @@ module MethodLog
         end
       })
 
-      method_finder = MethodFinder.new(source_file: foo)
+      method_finder = MethodFinder.new(foo)
       method_definition = method_finder.find('Foo.bar')
 
       expect(method_definition).to eq(MethodDefinition.new(foo, 1..3))
@@ -110,7 +110,7 @@ module MethodLog
         end
       })
 
-      method_finder = MethodFinder.new(source_file: foo)
+      method_finder = MethodFinder.new(foo)
       method_definition = method_finder.find('Foo.bar')
 
       expect(method_definition).to eq(MethodDefinition.new(foo, 1..3))
@@ -127,7 +127,7 @@ module MethodLog
         end
       })
 
-      method_finder = MethodFinder.new(source_file: foo)
+      method_finder = MethodFinder.new(foo)
       method_definition = method_finder.find('Foo::Bar.baz')
 
       expect(method_definition).to eq(MethodDefinition.new(foo, 2..4))
@@ -144,7 +144,7 @@ module MethodLog
         end
       })
 
-      method_finder = MethodFinder.new(source_file: foo)
+      method_finder = MethodFinder.new(foo)
       method_definition = method_finder.find('Foo.baz')
 
       expect(method_definition).to eq(MethodDefinition.new(foo, 3..5))
@@ -161,7 +161,7 @@ module MethodLog
         end
       })
 
-      method_finder = MethodFinder.new(source_file: foo)
+      method_finder = MethodFinder.new(foo)
       method_definition = method_finder.find('Foo.bar')
 
       expect(method_definition).to eq(MethodDefinition.new(foo, 2..4))
@@ -178,7 +178,7 @@ module MethodLog
         end
       })
 
-      method_finder = MethodFinder.new(source_file: foo)
+      method_finder = MethodFinder.new(foo)
       method_definition = method_finder.find('Foo.bar')
 
       expect(method_definition).to eq(MethodDefinition.new(foo, 2..4))
@@ -197,7 +197,7 @@ module MethodLog
         end
       })
 
-      method_finder = MethodFinder.new(source_file: foo)
+      method_finder = MethodFinder.new(foo)
       method_definition = method_finder.find('Foo.bar')
 
       expect(method_definition).to eq(MethodDefinition.new(foo, 4..6))
@@ -217,7 +217,7 @@ module MethodLog
         end
       })
 
-      method_finder = MethodFinder.new(source_file: foo)
+      method_finder = MethodFinder.new(foo)
       method_definition = method_finder.find('Foo::(ivar :@foo).bar')
 
       expect(method_definition).to eq(MethodDefinition.new(foo, 4..6))
@@ -238,7 +238,7 @@ module MethodLog
         end
       })
 
-      method_finder = MethodFinder.new(source_file: foo)
+      method_finder = MethodFinder.new(foo)
       method_definition = method_finder.find('Foo::Bar.foo')
 
       expect(method_definition).to eq(MethodDefinition.new(foo, 7..9))

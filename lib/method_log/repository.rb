@@ -21,11 +21,11 @@ module MethodLog
       end
     end
 
-    def commits(max_count: nil)
+    def commits(options = {})
       Enumerator.new do |yielder|
         if @repository.ref('refs/heads/master')
           @repository.walk(@repository.last_commit).with_index do |commit, index|
-            break if max_count && index >= max_count - 1
+            break if options[:max_count] && index >= options[:max_count] - 1
             yielder << build_commit(sha: commit.oid)
           end
         end

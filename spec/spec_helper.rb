@@ -2,8 +2,9 @@ $LOAD_PATH.unshift(File.expand_path('../../lib', __FILE__))
 
 module MethodLog
   module SourceHelper
-    def source(source: nil, **args)
-      SourceFile.new(source: source ? unindent(source) : source, **args)
+    def source(options = {})
+      options[:source] = options[:source] ? unindent(options[:source]) : options[:source]
+      SourceFile.new(options)
     end
 
     def unindent(code)

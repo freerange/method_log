@@ -8,10 +8,10 @@ module MethodLog
       @repository = repository
     end
 
-    def history(method_identifier, max_count: nil)
+    def history(method_identifier, options = {})
       Enumerator.new do |yielder|
         last_method_commit = nil
-        @repository.commits(max_count: max_count).each do |commit|
+        @repository.commits(options).each do |commit|
           last_source_file = last_method_commit && last_method_commit.source_file
           if last_source_file && commit.contains?(last_source_file)
             last_method_commit.update(commit)
@@ -25,9 +25,9 @@ module MethodLog
       end
     end
 
-    def diffs(method_identifier, max_count: nil)
+    def diffs(method_identifier, options = {})
       Enumerator.new do |yielder|
-        history(method_identifier, max_count: max_count).each_cons(2) do |(commit, parent)|
+        history(method_identifier, options).each_cons(2) do |(commit, parent)|
           diff = MethodDiff.new(parent, commit)
           unless diff.empty?
             yielder << [commit, diff]

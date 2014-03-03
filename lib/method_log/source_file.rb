@@ -3,11 +3,11 @@ module MethodLog
     attr_reader :path
     attr_reader :sha
 
-    def initialize(path: nil, source: nil, repository: nil, sha: nil)
-      @path = path
-      @source = source
-      @repository = repository
-      @sha = sha
+    def initialize(options = {})
+      @path = options[:path]
+      @source = options[:source]
+      @repository = options[:repository]
+      @sha = options[:sha]
     end
 
     def source

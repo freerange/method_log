@@ -33,8 +33,6 @@ Trace the history of an individual method in a git repository (experimental).
 * Default to looking for commits in current git branch
 * Check what happens with merge commits
 * Maybe add as new git command or extension to existing command e.g. `git log`
-* Optimise search for method definitions:
-  * First look in file where method was last defined
 * Find "similar" method implementations e.g. by comparing ASTs of implementations
 
 ### Credits

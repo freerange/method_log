@@ -17,7 +17,7 @@ module MethodLog
           if last_source_file && commit.contains?(last_source_file)
             last_method_commit.update(commit)
           else
-            method_definition = commit.find(method_identifier)
+            method_definition = commit.find(method_identifier, last_source_file)
             yielder << last_method_commit if last_method_commit
             last_method_commit = MethodCommit.new(commit, method_definition)
             yielder << last_method_commit

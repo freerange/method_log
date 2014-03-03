@@ -9,7 +9,7 @@ module MethodLog
       @commits = []
     end
 
-    def build_commit(sha: nil)
+    def build_commit(sha = nil)
       Commit.new(sha, @repository)
     end
 
@@ -26,7 +26,7 @@ module MethodLog
         if @repository.ref('refs/heads/master')
           @repository.walk(@repository.last_commit).with_index do |commit, index|
             break if options[:max_count] && index >= options[:max_count] - 1
-            yielder << build_commit(sha: commit.oid)
+            yielder << build_commit(commit.oid)
           end
         end
       end

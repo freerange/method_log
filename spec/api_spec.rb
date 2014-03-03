@@ -104,6 +104,32 @@ module MethodLog
       expect(method_commits.map(&:sha)).to eq([commit_3.sha, commit_2.sha])
     end
 
+    it 'continues past lastest introduction of method if required even if method not defined in latest commit' do
+      repository = Repository.new(repository_path)
+      commit_1 = repository.commit(source(path: 'foo.rb', source: %{
+        class Foo
+          def bar; end
+        end
+      }))
+      commit_2 = repository.commit(source(path: 'foo.rb', source: %{
+        class Foo
+        end
+      }))
+      commit_3 = repository.commit(source(path: 'foo.rb', source: %{
+        class Foo
+          def bar; end
+        end
+      }))
+      commit_4 = repository.commit(source(path: 'foo.rb', source: %{
+        class Foo
+        end
+      }))
+
+      method_commits, method_diffs = commits_and_diffs_for('Foo#bar', stop_at_latest_introduction_of_method: false)
+
+      expect(method_commits.map(&:sha)).to eq([commit_4.sha, commit_3.sha, commit_2.sha])
+    end
+
     private
 
     def commits_and_diffs_for(method_identifier, options = {})

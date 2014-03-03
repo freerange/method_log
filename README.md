@@ -6,7 +6,7 @@ This is a work-in-progress and nowhere near production-ready.
 
 ### Dependencies
 
-* Ruby >= v2.0.0 (just because I'm using named parameters)
+* Ruby >= v1.9.3
 * The [rugged](https://github.com/libgit2/rugged) Ruby gem (listed as dependency in gemspec)
 * The [libgit2](https://github.com/libgit2/libgit2) C library (included as part of rugged gem)
 
@@ -20,7 +20,6 @@ This is a work-in-progress and nowhere near production-ready.
 
 ### Todo
 
-* Support earlier versions of Ruby (it ought to be possible to support down to v1.9.3 fairly easily)
 * Support for Rspec tests
 * Default to looking for commits in current git branch
 * Maybe add as new git command or extension to existing command e.g. `git log`

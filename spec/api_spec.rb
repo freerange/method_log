@@ -21,7 +21,7 @@ module MethodLog
     end
 
     it 'finds class instance method in repository with two commits with single source file' do
-      repository = Repository.new(path: repository_path)
+      repository = Repository.new(repository_path)
       commit_1 = repository.commit(source(path: 'foo.rb', source: %{
         class Foo
           def bar
@@ -50,7 +50,7 @@ module MethodLog
     end
 
     it 'finds method which is defined, then removed, and then defined again' do
-      repository = Repository.new(path: repository_path)
+      repository = Repository.new(repository_path)
       commit_1 = repository.commit(source(path: 'foo.rb', source: %{
         class Foo
           def bar; end
@@ -83,7 +83,7 @@ module MethodLog
     private
 
     def commits_and_diffs_for(method_identifier)
-      api = API.new(Repository.new(path: repository_path))
+      api = API.new(Repository.new(repository_path))
       commits_and_diffs = api.diffs(method_identifier)
       method_commits = commits_and_diffs.map(&:first)
       method_diffs = commits_and_diffs.map(&:last)

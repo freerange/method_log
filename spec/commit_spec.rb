@@ -34,10 +34,10 @@ module MethodLog
         source_one = source(path: 'path/to/source_one.rb', source: 'source-one')
         source_two = source(path: 'path/to/source_two.rb', source: 'source-two')
 
-        repository = Repository.new(path: repository_path)
+        repository = Repository.new(repository_path)
         commit = repository.commit(source_one, source_two)
 
-        repository = Repository.new(path: repository_path)
+        repository = Repository.new(repository_path)
         commit = repository.commits.first
         expect(commit.source_files.to_a).to eq([source_one, source_two])
       end
@@ -45,10 +45,10 @@ module MethodLog
       it 'only includes source files with ruby file extension' do
         source_file = source(path: 'path/to/source_one.py', source: 'source-file')
 
-        repository = Repository.new(path: repository_path)
+        repository = Repository.new(repository_path)
         commit = repository.commit(source_file)
 
-        repository = Repository.new(path: repository_path)
+        repository = Repository.new(repository_path)
         commit = repository.commits.first
         expect(commit.source_files.to_a).to be_empty
       end
@@ -57,13 +57,13 @@ module MethodLog
         source_file = source(path: 'path/to/source.rb', source: 'source-file')
         another_source_file = source(path: 'path/to/another_source.rb', source: 'another-source-file')
 
-        repository = Repository.new(path: repository_path)
+        repository = Repository.new(repository_path)
         commit = repository.commit(source_file)
         source_file = commit.source_files.first
         another_commit = repository.commit(another_source_file)
         another_source_file = another_commit.source_files.first
 
-        repository = Repository.new(path: repository_path)
+        repository = Repository.new(repository_path)
         commit = repository.commits.to_a.last
 
         expect(commit.contains?(source_file)).to be_true
@@ -74,10 +74,10 @@ module MethodLog
         user = { email: 'test@example.com', name: 'test', time: Time.now.round }
         source_file = source(path: 'path/to/source.rb', source: 'source')
 
-        repository = Repository.new(path: repository_path)
+        repository = Repository.new(repository_path)
         commit = repository.commit(source_file, user: user)
 
-        repository = Repository.new(path: repository_path)
+        repository = Repository.new(repository_path)
         commit = repository.commits.first
         expect(commit.author).to eq(user)
       end
@@ -85,10 +85,10 @@ module MethodLog
       it 'makes message available' do
         source_file = source(path: 'path/to/source.rb', source: 'source')
 
-        repository = Repository.new(path: repository_path)
+        repository = Repository.new(repository_path)
         commit = repository.commit(source_file, message: 'commit-message')
 
-        repository = Repository.new(path: repository_path)
+        repository = Repository.new(repository_path)
         commit = repository.commits.first
         expect(commit.message).to eq('commit-message')
       end

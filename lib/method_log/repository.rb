@@ -4,7 +4,7 @@ require 'method_log/commit'
 
 module MethodLog
   class Repository
-    def initialize(path: nil)
+    def initialize(path)
       @repository = Rugged::Repository.new(path)
       @commits = []
     end

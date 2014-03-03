@@ -22,6 +22,7 @@ This is a work-in-progress and nowhere near production-ready.
 
 * Support for Rspec tests
 * Default to looking for commits in current git branch
+* Check what happens with merge commits
 * Maybe add as new git command or extension to existing command e.g. `git log`
 * Optimise search for method definitions:
   * First look in file where method was last defined

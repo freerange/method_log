@@ -49,11 +49,10 @@ module MethodLog
       }))
     end
 
-    it 'finds method which is defined, then removed, and then defined again' do
+    it 'finds significant commits for definition of method' do
       repository = Repository.new(repository_path)
       commit_1 = repository.commit(source(path: 'foo.rb', source: %{
         class Foo
-          def bar; end
         end
       }))
       commit_2 = repository.commit(source(path: 'foo.rb', source: %{
@@ -70,21 +69,46 @@ module MethodLog
           def bar; end
         end
       }))
+      commit_5 = repository.commit(source(path: 'foo.rb', source: %{
+        class Foo
+          def bar
+            # implementation
+          end
+        end
+      }))
 
       method_commits, method_diffs = commits_and_diffs_for('Foo#bar')
 
+      expect(method_commits.map(&:sha)).to eq([commit_5.sha, commit_3.sha])
+    end
+
+    it 'continues past lastest introduction of method if required' do
+      repository = Repository.new(repository_path)
+      commit_1 = repository.commit(source(path: 'foo.rb', source: %{
+        class Foo
+          def bar; end
+        end
+      }))
+      commit_2 = repository.commit(source(path: 'foo.rb', source: %{
+        class Foo
+        end
+      }))
+      commit_3 = repository.commit(source(path: 'foo.rb', source: %{
+        class Foo
+          def bar; end
+        end
+      }))
+
+      method_commits, method_diffs = commits_and_diffs_for('Foo#bar', stop_at_latest_introduction_of_method: false)
+
       expect(method_commits.map(&:sha)).to eq([commit_3.sha, commit_2.sha])
-      expect(method_diffs.map(&:to_s)).to eq([
-        "+  def bar; end\n",
-        "-  def bar; end\n"
-      ])
     end
 
     private
 
-    def commits_and_diffs_for(method_identifier)
+    def commits_and_diffs_for(method_identifier, options = {})
       api = API.new(Repository.new(repository_path))
-      commits_and_diffs = api.diffs(method_identifier)
+      commits_and_diffs = api.diffs(method_identifier, options)
       method_commits = commits_and_diffs.map(&:first)
       method_diffs = commits_and_diffs.map(&:last)
       [method_commits, method_diffs]

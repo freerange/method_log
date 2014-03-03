@@ -9,6 +9,7 @@ module MethodLog
     end
 
     def history(method_identifier, options = {})
+      options = { stop_at_latest_introduction_of_method: true }.merge(options)
       Enumerator.new do |yielder|
         last_method_commit = nil
         @repository.commits(options).each do |commit|

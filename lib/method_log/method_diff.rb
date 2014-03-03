@@ -2,7 +2,7 @@ require 'diffy'
 
 module MethodLog
   class MethodDiff
-    def initialize(first_commit: nil, second_commit: nil)
+    def initialize(first_commit, second_commit)
       @first_commit, @second_commit = first_commit, second_commit
     end
 

@@ -28,7 +28,7 @@ module MethodLog
     def diffs(method_identifier, max_count: nil)
       Enumerator.new do |yielder|
         history(method_identifier, max_count: max_count).each_cons(2) do |(commit, parent)|
-          diff = MethodDiff.new(first_commit: parent, second_commit: commit)
+          diff = MethodDiff.new(parent, commit)
           unless diff.empty?
             yielder << [commit, diff]
           end

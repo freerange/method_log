@@ -6,7 +6,7 @@ module MethodLog
   describe MethodDiff do
     let(:first_commit) { double(:first_commit) }
     let(:second_commit) { double(:second_commit) }
-    let(:diff) { MethodDiff.new(first_commit: first_commit, second_commit: second_commit) }
+    let(:diff) { MethodDiff.new(first_commit, second_commit) }
 
     it 'generates text diff of the method source for two commits' do
       first_commit.stub(:method_source).and_return(%{line 1\nline 2\n})

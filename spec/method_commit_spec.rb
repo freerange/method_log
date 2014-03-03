@@ -11,10 +11,10 @@ module MethodLog
     let(:source_file) { source(path: '/path/to/source.rb', source: "line 0\nline 1\nline 2\n") }
     let(:method_definition) { MethodDefinition.new(source_file: source_file, lines: 0..1) }
     let(:method_commit) {
-      MethodCommit.new(commit: commit, method_definition: method_definition)
+      MethodCommit.new(commit, method_definition)
     }
     let(:method_commit_with_same_commit_and_method_definition) {
-      MethodCommit.new(commit: commit, method_definition: method_definition)
+      MethodCommit.new(commit, method_definition)
     }
 
     it 'is equal to another method commit with same commit and method definition' do
@@ -30,7 +30,7 @@ module MethodLog
     end
 
     it 'returns nil if no method definition' do
-      method_commit = MethodCommit.new(commit: commit, method_definition: nil)
+      method_commit = MethodCommit.new(commit, method_definition = nil)
       expect(method_commit.method_source).to be_nil
     end
   end

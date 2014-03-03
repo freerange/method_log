@@ -18,7 +18,7 @@ module MethodLog
           else
             method_definition = commit.find(method_identifier)
             yielder << last_method_commit if last_method_commit
-            last_method_commit = MethodCommit.new(commit: commit, method_definition: method_definition)
+            last_method_commit = MethodCommit.new(commit, method_definition)
             yielder << last_method_commit
           end
         end

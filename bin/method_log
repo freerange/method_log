@@ -1,15 +1,30 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require 'method_log'
-require 'method_log/repository'
-require 'method_log/api'
 require 'trollop'
 
 options = Trollop::options do
   opt :patch, 'Generate patch.', short: 'p'
+  opt :ruby_version, 'Parser Ruby version (18, 19, 20, 21)', default: 'current'
   opt :max_count, 'Limit the number of commits to output.', type: :integer, short: 'n'
 end
+
+case ruby_version = options[:ruby_version]
+when 'current'
+  require 'parser/current'
+when '18', '19', '20', '21'
+  require 'parser/ruby18'
+  require 'parser/ruby19'
+  require 'parser/ruby20'
+  require 'parser/ruby21'
+  Parser::CurrentRuby = Parser.const_get("Ruby#{ruby_version}")
+else
+  raise "Ruby version not supported: #{ruby_version}"
+end
+
+require 'method_log'
+require 'method_log/repository'
+require 'method_log/api'
 
 repository = MethodLog::Repository.new(path: Dir.pwd)
 api = MethodLog::API.new(repository: repository)

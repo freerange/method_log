@@ -1,4 +1,6 @@
-require 'parser/current'
+unless defined?(Parser::CurrentRuby)
+  require 'parser/current'
+end
 
 require 'method_log/method_definition'
 require 'method_log/scope'

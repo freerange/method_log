@@ -17,7 +17,8 @@ module MethodLog
       @index.add(path: source_file.path, oid: oid, mode: 0100644)
     end
 
-    def apply(user: nil, message: nil)
+    def apply(options = {})
+      user, message = options[:user], options[:message]
       tree = @index.write_tree(@repository)
       parents = @repository.empty? ? [] : [@repository.head.target].compact
       @sha = Rugged::Commit.create(@repository, tree: tree, parents: parents, update_ref: 'HEAD', author: user, committer: user, message: message)

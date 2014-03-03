@@ -13,10 +13,13 @@ module MethodLog
       Commit.new(sha, @repository)
     end
 
-    def commit(*source_files, user: { email: 'test@example.com', name: 'test', time: Time.now }, message: 'commit-message')
+    def commit(*source_files)
+      options = source_files.pop if source_files.last.is_a?(Hash)
+      options ||= {}
+      options = { user: { email: 'test@example.com', name: 'test', time: Time.now }, message: 'commit-message' }.merge(options)
       build_commit.tap do |commit|
         source_files.each { |sf| commit.add(sf) }
-        commit.apply(user: user, message: message)
+        commit.apply(options)
         @commits << commit
       end
     end

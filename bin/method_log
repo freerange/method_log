@@ -7,6 +7,7 @@ options = Trollop::options do
   opt :patch, 'Generate patch.', short: 'p'
   opt :ruby_version, 'Parser Ruby version (18, 19, 20, 21)', default: 'current'
   opt :max_count, 'Limit the number of commits to output.', type: :integer, short: 'n'
+  opt :stop_at_latest_introduction_of_method, 'Stop at lastest introduction of method.', default: true
 end
 
 case ruby_version = options[:ruby_version]
@@ -28,7 +29,7 @@ require 'method_log/api'
 
 repository = MethodLog::Repository.new(Dir.pwd)
 api = MethodLog::API.new(repository)
-api.diffs(ARGV[0], max_count: options[:max_count]).each do |method_commit, method_diff|
+api.diffs(ARGV[0], options).each do |method_commit, method_diff|
   puts "commit #{method_commit.sha}"
   puts "Author: #{method_commit.author[:name]} <#{method_commit.author[:email]}>"
   puts "Date:   #{method_commit.author[:time].strftime('%a %b %-e %T %Y %z')}"

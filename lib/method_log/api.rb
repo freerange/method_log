@@ -20,6 +20,7 @@ module MethodLog
             yielder << last_method_commit if last_method_commit
             last_method_commit = MethodCommit.new(commit, method_definition)
             yielder << last_method_commit
+            break if options[:stop_at_latest_introduction_of_method] && method_definition.nil?
           end
         end
       end

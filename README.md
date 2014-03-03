@@ -4,11 +4,12 @@ Trace the history of an individual method in a git repository.
 
 This is a work-in-progress and nowhere near production-ready.
 
-### Dependencies
+### Requirements
 
-* Ruby >= v1.9.3
+* Ruby >= v1.9.3 (due to requirements of the `rugged` gem)
 * The [rugged](https://github.com/libgit2/rugged) Ruby gem (listed as dependency in gemspec)
 * The [libgit2](https://github.com/libgit2/libgit2) C library (included as part of rugged gem)
+* The [parser](https://github.com/whitequark/parser) Ruby gem (listed as dependency in gemspec)
 
 ### Install
 

@@ -2,7 +2,7 @@ module MethodLog
   class MethodDefinition
     attr_reader :source_file
 
-    def initialize(source_file: nil, lines: nil)
+    def initialize(source_file, lines)
       @source_file = source_file
       @lines = lines
     end

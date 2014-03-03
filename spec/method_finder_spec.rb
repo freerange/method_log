@@ -17,7 +17,7 @@ module MethodLog
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo#bar')
 
-      expect(method_definition).to eq(MethodDefinition.new(source_file: foo, lines: 1..3))
+      expect(method_definition).to eq(MethodDefinition.new(foo, 1..3))
     end
 
     it 'finds definition of instance method on module' do
@@ -32,7 +32,7 @@ module MethodLog
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo#bar')
 
-      expect(method_definition).to eq(MethodDefinition.new(source_file: foo, lines: 1..3))
+      expect(method_definition).to eq(MethodDefinition.new(foo, 1..3))
     end
 
     it 'finds definition of instance method on class within module' do
@@ -49,7 +49,7 @@ module MethodLog
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo::Bar#baz')
 
-      expect(method_definition).to eq(MethodDefinition.new(source_file: foo, lines: 2..4))
+      expect(method_definition).to eq(MethodDefinition.new(foo, 2..4))
     end
 
     it 'finds definition of instance method on namespaced class within previously defined module' do
@@ -66,7 +66,7 @@ module MethodLog
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo::Bar#baz')
 
-      expect(method_definition).to eq(MethodDefinition.new(source_file: foo, lines: 3..5))
+      expect(method_definition).to eq(MethodDefinition.new(foo, 3..5))
     end
 
     it 'finds definition of instance method on namespaced module within previously defined module' do
@@ -83,7 +83,7 @@ module MethodLog
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo::Bar#baz')
 
-      expect(method_definition).to eq(MethodDefinition.new(source_file: foo, lines: 3..5))
+      expect(method_definition).to eq(MethodDefinition.new(foo, 3..5))
     end
 
     it 'finds definition of class method on class' do
@@ -98,7 +98,7 @@ module MethodLog
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo.bar')
 
-      expect(method_definition).to eq(MethodDefinition.new(source_file: foo, lines: 1..3))
+      expect(method_definition).to eq(MethodDefinition.new(foo, 1..3))
     end
 
     it 'finds definition of class method on class with explicit reference to class' do
@@ -113,7 +113,7 @@ module MethodLog
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo.bar')
 
-      expect(method_definition).to eq(MethodDefinition.new(source_file: foo, lines: 1..3))
+      expect(method_definition).to eq(MethodDefinition.new(foo, 1..3))
     end
 
     it 'finds definition of class method on class with explicit reference to namespaced class' do
@@ -130,7 +130,7 @@ module MethodLog
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo::Bar.baz')
 
-      expect(method_definition).to eq(MethodDefinition.new(source_file: foo, lines: 2..4))
+      expect(method_definition).to eq(MethodDefinition.new(foo, 2..4))
     end
 
     it 'finds definition of class method on class with explicit reference to namespaced class outside current scope' do
@@ -147,7 +147,7 @@ module MethodLog
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo.baz')
 
-      expect(method_definition).to eq(MethodDefinition.new(source_file: foo, lines: 3..5))
+      expect(method_definition).to eq(MethodDefinition.new(foo, 3..5))
     end
 
     it 'finds definition of class method on class when singleton class is re-opened' do
@@ -164,7 +164,7 @@ module MethodLog
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo.bar')
 
-      expect(method_definition).to eq(MethodDefinition.new(source_file: foo, lines: 2..4))
+      expect(method_definition).to eq(MethodDefinition.new(foo, 2..4))
     end
 
     it 'finds definition of class method on class when singleton class is re-opened with explicit reference to class' do
@@ -181,7 +181,7 @@ module MethodLog
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo.bar')
 
-      expect(method_definition).to eq(MethodDefinition.new(source_file: foo, lines: 2..4))
+      expect(method_definition).to eq(MethodDefinition.new(foo, 2..4))
     end
 
     it 'finds definition of class method on class when singleton class is re-opened with explicit reference to class outside current scope' do
@@ -200,7 +200,7 @@ module MethodLog
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo.bar')
 
-      expect(method_definition).to eq(MethodDefinition.new(source_file: foo, lines: 4..6))
+      expect(method_definition).to eq(MethodDefinition.new(foo, 4..6))
     end
 
     it 'finds definition of class method on unknown object when singleton class is re-opened' do
@@ -220,7 +220,7 @@ module MethodLog
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo::(ivar :@foo).bar')
 
-      expect(method_definition).to eq(MethodDefinition.new(source_file: foo, lines: 4..6))
+      expect(method_definition).to eq(MethodDefinition.new(foo, 4..6))
     end
 
     it 'finds definition of class method on ambiguous module referenced via top-level module' do
@@ -241,7 +241,7 @@ module MethodLog
       method_finder = MethodFinder.new(source_file: foo)
       method_definition = method_finder.find('Foo::Bar.foo')
 
-      expect(method_definition).to eq(MethodDefinition.new(source_file: foo, lines: 7..9))
+      expect(method_definition).to eq(MethodDefinition.new(foo, 7..9))
     end
   end
 end

@@ -78,7 +78,7 @@ module MethodLog
     end
 
     def record_method_definition(scope, name, node)
-      definition = MethodDefinition.new(source_file: @source_file, lines: lines_for(node))
+      definition = MethodDefinition.new(@source_file, lines_for(node))
       identifier = scope.method_identifier(name)
       @methods[identifier] = definition
     end

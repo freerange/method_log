@@ -27,7 +27,7 @@ require 'method_log/repository'
 require 'method_log/api'
 
 repository = MethodLog::Repository.new(path: Dir.pwd)
-api = MethodLog::API.new(repository: repository)
+api = MethodLog::API.new(repository)
 api.diffs(ARGV[0], max_count: options[:max_count]).each do |method_commit, method_diff|
   puts "commit #{method_commit.sha}"
   puts "Author: #{method_commit.author[:name]} <#{method_commit.author[:email]}>"

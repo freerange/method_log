@@ -4,7 +4,7 @@ require 'method_log/method_diff'
 
 module MethodLog
   class API
-    def initialize(repository: nil)
+    def initialize(repository)
       @repository = repository
     end
 

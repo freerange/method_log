@@ -83,7 +83,7 @@ module MethodLog
     private
 
     def commits_and_diffs_for(method_identifier)
-      api = API.new(repository: Repository.new(path: repository_path))
+      api = API.new(Repository.new(path: repository_path))
       commits_and_diffs = api.diffs(method_identifier)
       method_commits = commits_and_diffs.map(&:first)
       method_diffs = commits_and_diffs.map(&:last)

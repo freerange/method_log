@@ -7,8 +7,8 @@ require 'method_log/source_file'
 module MethodLog
   describe Commit do
     let(:sha) { 'b54d38bbd989f4b54c38fd77767d89d1' }
-    let(:commit) { Commit.new(sha: sha) }
-    let(:commit_with_same_sha) { Commit.new(sha: sha) }
+    let(:commit) { Commit.new(sha) }
+    let(:commit_with_same_sha) { Commit.new(sha) }
 
     it 'is equal to another commit with same SHA' do
       expect(commit).to eq(commit_with_same_sha)

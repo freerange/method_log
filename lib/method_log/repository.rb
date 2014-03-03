@@ -10,7 +10,7 @@ module MethodLog
     end
 
     def build_commit(sha: nil)
-      Commit.new(repository: @repository, sha: sha)
+      Commit.new(sha, @repository)
     end
 
     def commit(*source_files, user: { email: 'test@example.com', name: 'test', time: Time.now }, message: 'commit-message')

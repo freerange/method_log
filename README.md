@@ -1,8 +1,6 @@
 ## Method Log
 
-Trace the history of an individual method in a git repository.
-
-This is a work-in-progress and nowhere near production-ready.
+Trace the history of an individual method in a git repository (experimental).
 
 ### Requirements
 

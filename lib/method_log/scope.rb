@@ -2,7 +2,7 @@ module MethodLog
   class Scope
     class Null < Scope
       def initialize
-        super(name: 'null')
+        super('null')
       end
 
       def lookup(name)
@@ -12,7 +12,7 @@ module MethodLog
 
     class Root < Scope
       def initialize
-        super(name: 'root', parent: Scope::Null.new)
+        super('root', parent = Scope::Null.new)
       end
 
       def names
@@ -26,7 +26,7 @@ module MethodLog
 
     attr_reader :parent
 
-    def initialize(name: nil, parent: nil, singleton: false)
+    def initialize(name, parent = nil, singleton = false)
       @name = name
       @parent = parent
       @singleton = singleton
@@ -46,7 +46,7 @@ module MethodLog
     end
 
     def define(name)
-      @modules[name] = Scope.new(name: name, parent: self)
+      @modules[name] = Scope.new(name, parent = self)
     end
 
     def lookup(name)
@@ -54,7 +54,7 @@ module MethodLog
     end
 
     def singleton
-      Scope.new(name: @name, parent: self, singleton: true)
+      Scope.new(@name, parent = self, singleton = true)
     end
 
     def method_identifier(name)

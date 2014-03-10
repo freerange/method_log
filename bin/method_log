@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'bundler/setup'
-require 'trollop'
+require 'method_log'
 
 options = Trollop::options do
   opt :patch, 'Generate patch.', short: 'p'

@@ -66,8 +66,8 @@ module MethodLog
         repository = Repository.new(repository_path)
         commit = repository.commits.to_a.last
 
-        expect(commit.contains?(source_file)).to be_true
-        expect(commit.contains?(another_source_file)).to be_false
+        expect(commit.contains?(source_file)).to be true
+        expect(commit.contains?(another_source_file)).to be false
       end
 
       it 'makes author available' do

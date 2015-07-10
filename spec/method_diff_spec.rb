@@ -9,8 +9,8 @@ module MethodLog
     let(:diff) { MethodDiff.new(first_commit, second_commit) }
 
     it 'generates text diff of the method source for two commits' do
-      first_commit.stub(:method_source).and_return(%{line 1\nline 2\n})
-      second_commit.stub(:method_source).and_return(%{line 2\nline 3\n})
+      allow(first_commit).to receive(:method_source).and_return(%{line 1\nline 2\n})
+      allow(second_commit).to receive(:method_source).and_return(%{line 2\nline 3\n})
       expect(diff.to_s).to eq(%{-line 1\n line 2\n+line 3\n})
     end
   end

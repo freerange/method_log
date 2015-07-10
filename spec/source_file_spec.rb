@@ -39,7 +39,7 @@ module MethodLog
     end
 
     it 'looks up source in repository using SHA if no source set' do
-      repository.stub(:lookup).with(sha).and_return(blob)
+      allow(repository).to receive(:lookup).with(sha).and_return(blob)
       file = source(path: 'path/to/source.rb', repository: repository, sha: sha)
       expect(file.source).to eq('source')
     end

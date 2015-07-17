@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+cd .git/hooks
+bundle exec ruby post_commit.rb

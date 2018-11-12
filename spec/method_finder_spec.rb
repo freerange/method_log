@@ -218,7 +218,7 @@ module MethodLog
       })
 
       method_finder = MethodFinder.new(foo)
-      method_definition = method_finder.find('Foo::(ivar :@foo).bar')
+      method_definition = method_finder.find('Foo::s(:ivar, :@foo).bar')
 
       expect(method_definition).to eq(MethodDefinition.new(foo, 4..6))
     end

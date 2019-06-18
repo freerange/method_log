@@ -20,6 +20,7 @@ EOS
   opt :stop_at_latest_introduction_of_method, 'Stop at lastest introduction of method.', default: true
 end
 
+Optimist.die 'No method signature specified' if ARGV.empty?
 method_signature = ARGV[0]
 
 case ruby_version = options[:ruby_version]

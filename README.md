@@ -23,14 +23,6 @@ Trace the history of an individual method in a git repository (experimental).
 
     $ build_methods_repo [options] <source-repo-path> <target-repo-path>
 
-### To Do
-
-* Parsing support for RSpec tests
-* Default to looking for commits in current git branch
-* Check what happens with merge commits
-* Maybe add as new git command or extension to existing command e.g. `git log`
-* Find "similar" method implementations e.g. by comparing ASTs of implementations
-
 ### Credits
 
 Written by [James Mead](http://jamesmead.org) and the other members of [Go Free Range](http://gofreerange.com).

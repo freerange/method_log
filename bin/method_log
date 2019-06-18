@@ -19,6 +19,7 @@ EOS
   opt :ruby_version, 'Parser Ruby version (e.g. 2.5)', default: 'current'
   opt :max_count, 'Limit the number of commits to output.', type: :integer, short: 'n'
   opt :stop_at_latest_introduction_of_method, 'Stop at lastest introduction of method.', default: true
+  opt :repository_path, 'Path to repository', default: Dir.pwd
 end
 
 Optimist.die 'No method signature specified' if ARGV.empty?
@@ -41,7 +42,7 @@ end
 require 'method_log/repository'
 require 'method_log/api'
 
-repository = MethodLog::Repository.new(Dir.pwd)
+repository = MethodLog::Repository.new(options[:repository_path])
 api = MethodLog::API.new(repository)
 api.diffs(method_signature, options).each do |method_commit, method_diff|
   puts "commit #{method_commit.sha}"

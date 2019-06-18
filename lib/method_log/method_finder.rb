@@ -7,6 +7,8 @@ require 'method_log/scope'
 
 module MethodLog
   class MethodFinder < Parser::AST::Processor
+    attr_reader :methods
+
     def initialize(source_file)
       @source_file = source_file
       @scope = Scope::Root.new

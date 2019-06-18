@@ -1,4 +1,4 @@
-## Method Log
+## Method Log [![Build Status](https://travis-ci.org/freerange/method_log.svg?branch=master)](https://travis-ci.org/freerange/method_log) [![Gem Version](https://badge.fury.io/rb/method_log.svg)](https://badge.fury.io/rb/method_log)
 
 Trace the history of an individual method in a git repository (experimental).
 

@@ -25,9 +25,10 @@ module MethodLog
     end
 
     def commits(options = {})
+      options[:sorting] ||= Rugged::SORT_TOPO
       Enumerator.new do |yielder|
         if @repository.ref('refs/heads/master')
-          @repository.walk(@repository.last_commit, Rugged::SORT_TOPO).with_index do |commit, index|
+          @repository.walk(@repository.last_commit, options[:sorting]).with_index do |commit, index|
             break if options[:max_count] && index >= options[:max_count] - 1
             yielder << build_commit(commit.oid)
           end

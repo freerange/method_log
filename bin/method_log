@@ -4,7 +4,7 @@ require 'method_log'
 require 'optimist'
 
 options = Optimist::options do
-  opt :patch, 'Generate patch.', short: 'p'
+  opt :patch, 'Generate patch.'
   opt :ruby_version, 'Parser Ruby version (e.g. 2.5)', default: 'current'
   opt :max_count, 'Limit the number of commits to output.', type: :integer, short: 'n'
   opt :stop_at_latest_introduction_of_method, 'Stop at lastest introduction of method.', default: true

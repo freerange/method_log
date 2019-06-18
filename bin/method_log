@@ -4,6 +4,16 @@ require 'method_log'
 require 'optimist'
 
 options = Optimist::options do
+  banner <<-EOS
+Display the commit history for specified method.
+
+Usage:
+       method_log [options] <method-signature>
+
+where <method-signature> is in the Ruby Index format e.g. Foo#bar, Bar::Baz#foo, Baz.foo.
+
+and [options] are:
+EOS
   opt :patch, 'Generate patch.'
   opt :ruby_version, 'Parser Ruby version (e.g. 2.5)', default: 'current'
   opt :max_count, 'Limit the number of commits to output.', type: :integer, short: 'n'

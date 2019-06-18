@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rugged'
   s.add_dependency 'parser'
   s.add_dependency 'diffy'
-  s.add_dependency 'trollop'
+  s.add_dependency 'optimist'
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 3.0'

@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 
 require 'method_log'
-require 'trollop'
+require 'optimist'
 
-options = Trollop::options do
+options = Optimist::options do
   opt :patch, 'Generate patch.', short: 'p'
   opt :ruby_version, 'Parser Ruby version (18, 19, 20, 21)', default: 'current'
   opt :max_count, 'Limit the number of commits to output.', type: :integer, short: 'n'

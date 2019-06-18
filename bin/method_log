@@ -4,6 +4,7 @@ require 'method_log'
 require 'optimist'
 
 options = Optimist::options do
+  version MethodLog::VERSION
   banner <<-EOS
 Display the commit history for specified method.
 

@@ -20,7 +20,7 @@ when '18', '19', '20', '21'
   require 'parser/ruby21'
   Parser::CurrentRuby = Parser.const_get("Ruby#{ruby_version}")
 else
-  raise "Ruby version not supported: #{ruby_version}"
+  abort "Ruby version not supported: #{ruby_version}"
 end
 
 require 'method_log'

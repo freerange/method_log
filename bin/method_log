@@ -20,6 +20,8 @@ EOS
   opt :stop_at_latest_introduction_of_method, 'Stop at lastest introduction of method.', default: true
 end
 
+method_signature = ARGV[0]
+
 case ruby_version = options[:ruby_version]
 when 'current'
   require 'parser/current'
@@ -40,7 +42,7 @@ require 'method_log/api'
 
 repository = MethodLog::Repository.new(Dir.pwd)
 api = MethodLog::API.new(repository)
-api.diffs(ARGV[0], options).each do |method_commit, method_diff|
+api.diffs(method_signature, options).each do |method_commit, method_diff|
   puts "commit #{method_commit.sha}"
   puts "Author: #{method_commit.author[:name]} <#{method_commit.author[:email]}>"
   puts "Date:   #{method_commit.author[:time].strftime('%a %b %-e %T %Y %z')}"

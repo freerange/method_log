@@ -45,11 +45,7 @@ require 'method_log/api'
 repository = MethodLog::Repository.new(options[:repository_path])
 api = MethodLog::API.new(repository)
 api.diffs(method_signature, options).each do |method_commit, method_diff|
-  puts "commit #{method_commit.sha}"
-  puts "Author: #{method_commit.author[:name]} <#{method_commit.author[:email]}>"
-  puts "Date:   #{method_commit.author[:time].strftime('%a %b %-e %T %Y %z')}"
-  puts
-  puts method_commit.message
+  puts method_commit.to_s
   puts
   if options[:patch]
     puts method_diff.to_s(:color)

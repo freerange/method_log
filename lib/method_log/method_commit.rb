@@ -39,6 +39,16 @@ module MethodLog
       method_definition && method_definition.source_file
     end
 
+    def to_s
+      [
+        "commit #{sha}",
+        "Author: #{author[:name]} <#{author[:email]}>",
+        "Date:   #{author[:time].strftime('%a %b %-e %T %Y %z')}",
+        '',
+        message
+      ].join("\n")
+    end
+
     protected
 
     attr_reader :commit

@@ -28,10 +28,10 @@ when /^(\d)\.(\d)$/
     require "parser/ruby#{$1}#{$2}"
     Parser::CurrentRuby = Parser.const_get("Ruby#{$1}#{$2}")
   rescue LoadError
-    abort "Ruby version not supported: #{ruby_version}"
+    Optimist.die "Ruby version not supported: #{ruby_version}"
   end
 else
-  abort "Ruby version not supported: #{ruby_version}"
+  Optimist.die "Ruby version not supported: #{ruby_version}"
 end
 
 require 'method_log'

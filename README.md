@@ -4,10 +4,8 @@ Trace the history of an individual method in a git repository (experimental).
 
 ### Requirements
 
-* Ruby >= v2.0.0 (due to requirements of the `parser` gem); although parsing of source code for Ruby >= v1.8 is possible
-* The [rugged](https://github.com/libgit2/rugged) Ruby gem (listed as dependency in gemspec)
-* The [libgit2](https://github.com/libgit2/libgit2) C library (included as part of rugged gem)
-* The [parser](https://github.com/whitequark/parser) Ruby gem (listed as dependency in gemspec)
+* Tool runtime: Ruby >= v2.0.0
+* Source code under analysis: Ruby >= v1.8
 
 ### Install
 

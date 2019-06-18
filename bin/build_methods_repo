@@ -1,0 +1,80 @@
+#!/usr/bin/env ruby
+
+require 'method_log'
+require 'optimist'
+
+options = Optimist::options do
+  version MethodLog::VERSION
+  banner <<-EOS
+Build a parallel git repository of method definitions.
+
+Usage:
+       build_methods_repo [options] <source-path> <target-path>
+
+source-path: the path to the source repository from which to read
+target-path: the path to the target repository to which to write
+
+[options] are:
+EOS
+  opt :ruby_version, 'Parser Ruby version (e.g. 2.5)', default: 'current'
+  opt :excluded_directories, 'Directories in source repository to exclude from analysis', type: :strings, default: []
+end
+
+Optimist.die 'No source path specified' if ARGV[0].nil?
+source_path = ARGV[0]
+Optimist.die 'Source repository does not exist' unless Dir.exist?(source_path)
+
+Optimist.die 'No target path specified' if ARGV[1].nil?
+target_path = ARGV[1]
+Optimist.die 'Target repository already exists' if Dir.exist?(target_path)
+
+case ruby_version = options[:ruby_version]
+when 'current'
+  require 'parser/current'
+when /^(\d)\.(\d)$/
+  begin
+    require "parser/ruby#{$1}#{$2}"
+    Parser::CurrentRuby = Parser.const_get("Ruby#{$1}#{$2}")
+  rescue LoadError
+    Optimist.die "Ruby version not supported: #{ruby_version}"
+  end
+else
+  Optimist.die "Ruby version not supported: #{ruby_version}"
+end
+
+require 'method_log/repository'
+require 'method_log/method_finder'
+require 'method_log/source_file'
+
+def unindent(code)
+  lines = code.split($/)
+  indent = lines.reject { |l| l.strip.length == 0 }.map { |l| l[/^ */].length }.min
+  lines.map { |l| l.sub(Regexp.new(' ' * indent), '') }.join($/)
+end
+
+new_repository_path = File.expand_path(target_path)
+Rugged::Repository.init_at(new_repository_path, :bare)
+new_repository = MethodLog::Repository.new(new_repository_path)
+
+repository_path = File.expand_path(source_path)
+repository = MethodLog::Repository.new(repository_path)
+repository.commits(sorting: Rugged::SORT_TOPO | Rugged::SORT_REVERSE).each do |commit|
+  puts commit.to_s
+  new_commit = new_repository.build_commit
+  commit.source_files.each do |source_file|
+    next if options[:excluded_directories].any? { |d| source_file.path.start_with?(d) }
+    begin
+      method_finder = MethodLog::MethodFinder.new(source_file)
+      method_finder.methods.each do |method_signature, method_definition|
+        _, namespace, name = method_signature.match(/^(.*)([#.].*)$/).to_a
+        path = namespace.split('::').push(name).join(File::SEPARATOR) + '.rb'
+        method_source = unindent(method_definition.source) + $/
+        method_source_file = MethodLog::SourceFile.new(path: path, source: method_source)
+        new_commit.add(method_source_file)
+      end
+    rescue Parser::SyntaxError => e
+      p e
+    end
+  end
+  new_commit.apply(user: commit.author, message: commit.message)
+end

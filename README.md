@@ -2,6 +2,8 @@
 
 Trace the history of an individual method in a git repository (experimental).
 
+See [this article](https://gofreerange.com/tracing-the-git-history-of-a-ruby-method) for more information.
+
 ### Requirements
 
 * Tool runtime: Ruby >= v2.0.0

@@ -9,10 +9,10 @@ options = Optimist::options do
 Build a parallel git repository of method definitions.
 
 Usage:
-       build_methods_repo [options] <source-path> <target-path>
+       build_methods_repo [options] <source-repo-path> <target-repo-path>
 
-source-path: the path to the source repository from which to read
-target-path: the path to the target repository to which to write
+source-repo-path: the path to the source repository from which to read
+target-repo-path: the path to the target repository to which to write
 
 [options] are:
 EOS

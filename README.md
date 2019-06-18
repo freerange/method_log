@@ -15,21 +15,17 @@ Trace the history of an individual method in a git repository (experimental).
 
 ### Run
 
-    $ method_log <options> <method-signature>
+#### Display the commit history for a single method
 
-    # options:
-    --patch, -p:                                  Generate patch.
-    --ruby-version, -r <s>:                       Parser Ruby version (e.g. 2.5) (default: current)
-    --max-count, -n <i>:                          Limit the number of commits to output.
-    --stop-at-latest-introduction-of-method, -s:  Stop at lastest introduction of method.
-    --help, -h:                                   Show usage.
+    $ method_log [options] <method-signature>
 
-    # method-signature
-    Uses the Ruby Index format e.g. Foo#bar, Bar::Baz#foo, Baz.foo.
+#### Build a parallel git repository of method definitions
 
-### Todo
+    $ build_methods_repo [options] <source-repo-path> <target-repo-path>
 
-* Support for Rspec tests
+### To Do
+
+* Parsing support for RSpec tests
 * Default to looking for commits in current git branch
 * Check what happens with merge commits
 * Maybe add as new git command or extension to existing command e.g. `git log`

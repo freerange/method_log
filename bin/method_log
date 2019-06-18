@@ -5,7 +5,7 @@ require 'optimist'
 
 options = Optimist::options do
   opt :patch, 'Generate patch.', short: 'p'
-  opt :ruby_version, 'Parser Ruby version (18, 19, 20, 21)', default: 'current'
+  opt :ruby_version, 'Parser Ruby version (e.g. 2.5)', default: 'current'
   opt :max_count, 'Limit the number of commits to output.', type: :integer, short: 'n'
   opt :stop_at_latest_introduction_of_method, 'Stop at lastest introduction of method.', default: true
 end
@@ -13,12 +13,13 @@ end
 case ruby_version = options[:ruby_version]
 when 'current'
   require 'parser/current'
-when '18', '19', '20', '21'
-  require 'parser/ruby18'
-  require 'parser/ruby19'
-  require 'parser/ruby20'
-  require 'parser/ruby21'
-  Parser::CurrentRuby = Parser.const_get("Ruby#{ruby_version}")
+when /^(\d)\.(\d)$/
+  begin
+    require "parser/ruby#{$1}#{$2}"
+    Parser::CurrentRuby = Parser.const_get("Ruby#{$1}#{$2}")
+  rescue LoadError
+    abort "Ruby version not supported: #{ruby_version}"
+  end
 else
   abort "Ruby version not supported: #{ruby_version}"
 end

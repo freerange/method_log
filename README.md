@@ -19,7 +19,7 @@ Trace the history of an individual method in a git repository (experimental).
     
     # options:
     --patch, -p:                                  Generate patch.
-    --ruby-version, -r <s>:                       Parser Ruby version (18, 19, 20, 21) (default: current)
+    --ruby-version, -r <s>:                       Parser Ruby version (e.g. 2.5) (default: current)
     --max-count, -n <i>:                          Limit the number of commits to output.
     --stop-at-latest-introduction-of-method, -s:  Stop at lastest introduction of method.
     --help, -h:                                   Show usage.

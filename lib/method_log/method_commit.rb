@@ -46,7 +46,7 @@ module MethodLog
         "Date:   #{author[:time].strftime('%a %b %-e %T %Y %z')}",
         '',
         message
-      ].join("\n")
+      ].join($/)
     end
 
     protected

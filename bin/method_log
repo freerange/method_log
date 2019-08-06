@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'method_log'
+require 'method_log/version'
 require 'optimist'
 
 options = Optimist::options do
